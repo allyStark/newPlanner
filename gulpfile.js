@@ -3,13 +3,13 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 
-gulp.task('bundle', function() {
-    return browserify('src/app.js')
-        .transform('babelify', {presets: 'react'})
-        .bundle()
-        .pipe(source('bundle.js'))
-        .pipe(gulp.dest('static/'));
-});
+// gulp.task('bundle', function() {
+//     return browserify('src/app.js')
+//         .transform('babelify', {presets: 'react'})
+//         .bundle()
+//         .pipe(source('bundle.js'))
+//         .pipe(gulp.dest('static/'));
+// });
 
 gulp.task('watch', function() {
     var b = browserify({

@@ -1,4 +1,5 @@
 var React = require('react');
+var axios = require('axios');
 
 var Grid = require('react-bootstrap').Grid;
 var Row = require('react-bootstrap').Row;
@@ -10,7 +11,9 @@ var Results = require('./results');
 class Main extends React.Component {
     constructor() {
         super();
-        
+
+        this.state = { data: "a" };
+        this.validateForm = this.validateForm.bind(this);
     }
     validateForm() {
         let content = document.getElementById('location').value;
@@ -19,8 +22,15 @@ class Main extends React.Component {
             document.getElementById('feedback').innerHTML = "Enter a location wise guy";
         } else {
             document.getElementById('feedback').innerHTML = "";
+            axios.post('/api/places', { location: content }).then((res) => {
+                let results = [res.data.businesses];
+                //console.log(results);
+                this.setState({ data: results });
+                //TODO error handling
+            }).catch((err) => {
+                console.log(err);
+            });
         }
-        console.log(content);
     }
     render() {
         return(
@@ -34,7 +44,7 @@ class Main extends React.Component {
                 </div>
             </Row>
 
-            <Results />
+            <Results results={this.state.data}/>
 
         </Grid>    
         )
