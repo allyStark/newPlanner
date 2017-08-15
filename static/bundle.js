@@ -41993,7 +41993,7 @@ class Results extends React.Component {
     }
     returnOneResult(element) {
         console.log(element);
-        return React.createElement('div', null, React.createElement(Row, { className: 'results-row', key: element.id }, React.createElement(Col, { md: 3, className: 'results-name' }, element.name), React.createElement(Col, { md: 3, className: 'results-image' }, React.createElement('img', { className: 'results-image-image', src: element.image_url })), React.createElement(Col, { className: 'people-going', md: 2 }, '0'), React.createElement(Button, { id: element.name, md: 2 }, 'Going'), React.createElement('a', { href: element.url }, React.createElement(Button, { md: 2 }, 'YelpYoAss'))));
+        return React.createElement('div', null, React.createElement(Row, { className: 'results-row', key: element.id }, React.createElement(Col, { md: 3, className: 'results-name' }, element.name), React.createElement(Col, { md: 3, className: 'results-image' }, React.createElement('img', { className: 'results-image-image', src: element.image_url })), React.createElement(Col, { className: 'people-going', md: 2 }, '0'), React.createElement(Button, { id: element.name, md: 2 }, 'Going'), React.createElement('a', { href: element.url }, React.createElement(Button, { md: 2 }, 'Yelp'))));
     }
     renderResults() {
         let content = this.props.results[0];

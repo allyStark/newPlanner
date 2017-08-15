@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
+var sass = require('gulp-sass');
 
 // gulp.task('bundle', function() {
 //     return browserify('src/app.js')
@@ -11,7 +12,16 @@ var watchify = require('watchify');
 //         .pipe(gulp.dest('static/'));
 // });
 
+gulp.task('sass', function(){
+    return gulp.src('src/stylesheets/style.scss')
+        .pipe(sass())
+        .pipe(gulp.dest('static'))
+});
+
 gulp.task('watch', function() {
+
+    gulp.watch('src/stylesheets/style.scss', ['sass']);
+
     var b = browserify({
         entries: ['src/app.js'],
         cache: {}, packageCache: {},

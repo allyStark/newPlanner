@@ -19,7 +19,7 @@ class Results extends React.Component {
                 <Col md={3} className="results-name">{element.name}</Col>
                 <Col md={3} className="results-image"><img className="results-image-image" src={element.image_url} /></Col>
                 <Col className="people-going" md={2}>0</Col>
-                <Button id={element.name} md={2}>Going</Button><a href={element.url}><Button md={2}>YelpYoAss</Button></a>
+                <Button id={element.name} md={2}>Going</Button><a href={element.url}><Button md={2}>Yelp</Button></a>
             </Row>
             </div>
         )
