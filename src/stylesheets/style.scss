@@ -1,5 +1,63 @@
-.testing {
-    width: percentage(5/7);
-    height: (5*11);
-    color:pink; 
+@import url('https://fonts.googleapis.com/css?family=Josefin+Slab');
+
+$main-font: 'Josefin Slab', serif;
+$main-color: #4056A2;
+$second-color: #EFE1BA;
+$third-color: #D79922;
+$fourth-color:#C5CBE3;  
+$border: 2px $main-color solid;
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+.results-row{
+    margin: 20px 0 20px 0;
+    background-color: $second-color;
+}
+.results-name{
+    font-family: $main-font;
+    font-size: 200%;
+    margin-top:10px;
+}
+.result-yelp{
+    height:100px;
+    background-color:#F13C1F;
+    border-radius: 10px;
+}
+.results-going{
+    height:122px;
+    width: 200px;
+    font-family: $main-font;
+    font-size: 150%;
+    background-color: $fourth-color;
+    &:hover{
+        transition: 0.5s;
+        font-size:200%;
+    }
+}
+.people-going{
+    font-family: $main-font;
+    font-size: 140%;
+    font-weight: bold;
+    margin-top: 45px;
+}
+.main-nav{
+    background-color: $second-color;
+    font-family: $main-font;
+    font-size: 150%;
+    color: $second-color;
+    font-weight: bold;
+    border-bottom: $border;
+}
+.form-group{
+    font-family: $main-font;
+    font-size: 140%;
+}
+p{
+    font-family: $main-font;
+    font-size: 140%;
 }

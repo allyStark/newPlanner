@@ -1,4 +1,46 @@
-.testing {
-  width: 71.42857%;
-  height: 55;
-  color: pink; }
+@import url("https://fonts.googleapis.com/css?family=Josefin+Slab");
+.results-row {
+  margin: 20px 0 20px 0;
+  background-color: #EFE1BA; }
+
+.results-name {
+  font-family: "Josefin Slab", serif;
+  font-size: 200%;
+  margin-top: 10px; }
+
+.result-yelp {
+  height: 100px;
+  background-color: #F13C1F;
+  border-radius: 10px; }
+
+.results-going {
+  height: 122px;
+  width: 200px;
+  font-family: "Josefin Slab", serif;
+  font-size: 150%;
+  background-color: #C5CBE3; }
+  .results-going:hover {
+    transition: 0.5s;
+    font-size: 200%; }
+
+.people-going {
+  font-family: "Josefin Slab", serif;
+  font-size: 140%;
+  font-weight: bold;
+  margin-top: 45px; }
+
+.main-nav {
+  background-color: #EFE1BA;
+  font-family: "Josefin Slab", serif;
+  font-size: 150%;
+  color: #EFE1BA;
+  font-weight: bold;
+  border-bottom: 2px #4056A2 solid; }
+
+.form-group {
+  font-family: "Josefin Slab", serif;
+  font-size: 140%; }
+
+p {
+  font-family: "Josefin Slab", serif;
+  font-size: 140%; }

@@ -41850,7 +41850,46 @@ var Page = require('./components/page');
 
 ReactDOM.render(React.createElement(Page, null), document.getElementById('main'));
 
-},{"./components/page":473,"react":465,"react-dom":296}],471:[function(require,module,exports){
+},{"./components/page":474,"react":465,"react-dom":296}],471:[function(require,module,exports){
+var React = require('react');
+var axios = require('axios');
+
+var Row = require('react-bootstrap').Row;
+var Col = require('react-bootstrap').Col;
+var Button = require('react-bootstrap').Button;
+
+class Element extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+    handleClick() {
+        let lat = this.props.element.coordinates.latitude;
+        let lon = this.props.element.coordinates.longitude;
+
+        axios.post('/api/going', {
+            lat: lat,
+            lon: lon
+        }).then(res => {
+            console.log(res);
+            //TODO replace number going. State? 
+        }).catch(err => {
+            console.log(err);
+        });
+
+        // console.log(this.props.element);
+        // console.log(test);
+    }
+    render() {
+        //console.log(this.props.element);
+        return React.createElement(Row, { className: 'results-row' }, React.createElement(Col, { md: 3, className: 'results-name text-center' }, this.props.element.name), React.createElement(Col, { md: 3 }, React.createElement(Button, { bsSize: 'large', className: 'results-going', id: this.props.element.name, onClick: this.handleClick }, 'Going?')), React.createElement(Col, { className: 'people-going text-center', id: this.props.element.name + "peoplegoing", md: 4 }, 'There are 0 people going here tonight.'), React.createElement(Col, { md: 2 }, React.createElement('a', { href: this.props.element.url }, React.createElement(Button, { bsSize: 'large' }, React.createElement('img', { className: 'result-yelp', src: './images/yelplogo.png' })))));
+    }
+}
+
+module.exports = Element;
+
+},{"axios":1,"react":465,"react-bootstrap":285}],472:[function(require,module,exports){
 var React = require('react');
 var axios = require('axios');
 
@@ -41877,7 +41916,6 @@ class Main extends React.Component {
             document.getElementById('feedback').innerHTML = "";
             axios.post('/api/places', { location: content }).then(res => {
                 let results = [res.data.businesses];
-                //console.log(results);
                 this.setState({ data: results });
                 //TODO error handling
             }).catch(err => {
@@ -41886,37 +41924,13 @@ class Main extends React.Component {
         }
     }
     render() {
-        return React.createElement(
-            Grid,
-            null,
-            React.createElement(
-                Row,
-                null,
-                React.createElement(
-                    'div',
-                    { className: 'form-group' },
-                    React.createElement(
-                        'label',
-                        null,
-                        'Enter Your Location'
-                    ),
-                    React.createElement('input', { type: 'text', className: 'form-control', id: 'location' }),
-                    React.createElement(
-                        Button,
-                        { onClick: this.validateForm },
-                        'Go!'
-                    ),
-                    React.createElement('div', { id: 'feedback', className: 'feedback' })
-                )
-            ),
-            React.createElement(Results, { results: this.state.data })
-        );
+        return React.createElement(Grid, null, React.createElement(Row, null, React.createElement('p', null, '- Search for bars in your area and see who is going to be there!'), React.createElement('p', null, '- If you live in a big city with lots of bars, try to include the street name or neighbourhood'), React.createElement('p', null, '- Drink responsibly! Or don\'t, that\'s up to you.'), React.createElement('p', null, '- Hit the giant Yelp button to get more info about the bar you are interested in!')), React.createElement(Row, null, React.createElement('div', { className: 'form-group' }, React.createElement('label', null, 'Enter Your Location'), React.createElement('input', { type: 'text', className: 'form-control', id: 'location' }), React.createElement(Button, { block: true, onClick: this.validateForm }, 'Find Me Some Bars!'), React.createElement('div', { id: 'feedback', className: 'feedback' }))), React.createElement(Results, { results: this.state.data }));
     }
 }
 
 module.exports = Main;
 
-},{"./results":474,"axios":1,"react":465,"react-bootstrap":285}],472:[function(require,module,exports){
+},{"./results":475,"axios":1,"react":465,"react-bootstrap":285}],473:[function(require,module,exports){
 var React = require('react');
 
 var Navbar = require('react-bootstrap').Navbar;
@@ -41927,38 +41941,13 @@ var MenuItem = require('react-bootstrap').MenuItem;
 
 class Navi extends React.Component {
     render() {
-        return React.createElement(
-            Navbar,
-            null,
-            React.createElement(
-                Navbar.Header,
-                null,
-                React.createElement(
-                    Navbar.Brand,
-                    null,
-                    React.createElement(
-                        'a',
-                        { href: '#' },
-                        'Where Ya Drinkin?'
-                    )
-                )
-            ),
-            React.createElement(
-                Nav,
-                { className: 'pull-right' },
-                React.createElement(
-                    NavItem,
-                    { eventKey: 1, href: '#' },
-                    'Login'
-                )
-            )
-        );
+        return React.createElement(Navbar, { className: 'main-nav' }, React.createElement(Navbar.Header, null, React.createElement(Navbar.Brand, null, React.createElement('a', { href: '#' }, 'Where Ya Drinkin?'))), React.createElement(Nav, { className: 'pull-right' }, React.createElement(NavItem, { eventKey: 1, href: '#' }, 'Login')));
     }
 }
 
 module.exports = Navi;
 
-},{"react":465,"react-bootstrap":285}],473:[function(require,module,exports){
+},{"react":465,"react-bootstrap":285}],474:[function(require,module,exports){
 var React = require('react');
 
 var Navi = require('./navi');
@@ -41966,23 +41955,16 @@ var Main = require('./main');
 
 class Page extends React.Component {
     render() {
-        return React.createElement(
-            'div',
-            null,
-            React.createElement(Navi, null),
-            React.createElement(Main, null)
-        );
+        return React.createElement('div', null, React.createElement(Navi, null), React.createElement(Main, null));
     }
 }
 
 module.exports = Page;
 
-},{"./main":471,"./navi":472,"react":465}],474:[function(require,module,exports){
+},{"./main":472,"./navi":473,"react":465}],475:[function(require,module,exports){
 var React = require('react');
 
-var Row = require('react-bootstrap').Row;
-var Col = require('react-bootstrap').Col;
-var Button = require('react-bootstrap').Button;
+var Element = require('./element');
 
 class Results extends React.Component {
     constructor(props) {
@@ -41992,8 +41974,7 @@ class Results extends React.Component {
         this.returnOneResult = this.returnOneResult.bind(this);
     }
     returnOneResult(element) {
-        console.log(element);
-        return React.createElement('div', null, React.createElement(Row, { className: 'results-row', key: element.id }, React.createElement(Col, { md: 3, className: 'results-name' }, element.name), React.createElement(Col, { md: 3, className: 'results-image' }, React.createElement('img', { className: 'results-image-image', src: element.image_url })), React.createElement(Col, { className: 'people-going', md: 2 }, '0'), React.createElement(Button, { id: element.name, md: 2 }, 'Going'), React.createElement('a', { href: element.url }, React.createElement(Button, { md: 2 }, 'Yelp'))));
+        return React.createElement(Element, { element: element, key: element.id });
     }
     renderResults() {
         let content = this.props.results[0];
@@ -42005,6 +41986,7 @@ class Results extends React.Component {
         for (var i = 0; i < content.length; i++) {
             elements.push(this.returnOneResult(content[i]));
         }
+
         return elements;
     }
     render() {
@@ -42014,4 +41996,4 @@ class Results extends React.Component {
 
 module.exports = Results;
 
-},{"react":465,"react-bootstrap":285}]},{},[470]);
+},{"./element":471,"react":465}]},{},[470]);

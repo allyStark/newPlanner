@@ -9,7 +9,7 @@ var MenuItem = require('react-bootstrap').MenuItem;
 class Navi extends React.Component {
     render() {
         return(
-        <Navbar>
+        <Navbar className="main-nav">
             <Navbar.Header>
             <Navbar.Brand>
                 <a href="#">Where Ya Drinkin?</a>
