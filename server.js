@@ -4,6 +4,11 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const axios = require('axios');
+const strftime = require('strftime');
+
+var Bar = require('./models/Bar');
+
+console.log(getDate(-14400 * 1000));
 
 //client
 app.use(express.static('static'));
@@ -37,7 +42,11 @@ axios.defaults.headers.common['Authorization'] = 'Bearer 0NcJTYLBaovwIPpsNfz0-c0
 app.post('/api/places',(req, res) => {
     let location = req.body.location;
     axios.get('https://api.yelp.com/v3/businesses/search?location=' + location + '&term=bar').then((data) => {
-        //console.log(data);
+        let barData = data.data.businesses;
+        for (let i = 0; i < barData.length; i++){
+            console.log(barData[i]);
+        }
+        console.log(data.data.businesses);
         let bars = data.data;
         //TODO check against db. If entry exists, replace entry with db entry
         res.send(bars);
@@ -45,28 +54,78 @@ app.post('/api/places',(req, res) => {
         console.log(error);
     }));
 });
-//make request for going
+//make request to go to a bar
 app.post('/api/going',(req, res) => {
-    //TODO does the db entry exist already?
-    var lat = req.body.lat;
-    var lon = req.body.lon;
 
-    //get time zone bar is in using timezone db. Use only if there is no entry already in the database
-    axios.get('http://api.timezonedb.com/v2/get-time-zone?key=HRB5I8FLTT7K&format=json&by=position&lat=' + lat + '&lng=' + lon)
-    .then((data) => {
-        console.log(data.data);
-        let todayDate = data.data.formatted.split(" ");
-        todayDate = todayDate[0];
-        console.log(todayDate);
-    }).catch((error) => {
-        console.log(error);
+    let barId = req.body.barId;
+
+    Bar.findOne({ '_id': barId }, (err, bar) => {
+        if(err) throw err;
+
+        if(bar ==  null){
+            //no bar entry? Create a new db entry
+            //get date bar is in using timezone db. Use only if there is no entry already in the database
+            axios.get('http://api.timezonedb.com/v2/get-time-zone?key=HRB5I8FLTT7K&format=json&by=position&lat=' + req.body.lat + '&lng=' + req.body.lon)
+            .then((data) => {
+                let todayDate = data.data.formatted.split(" ");
+                console.log(data.data);
+                //create new mongo entry
+                var newBar = new Bar({
+                    _id: barId,
+                    going: 1,
+                    offset: data.data.gmtOffset * 1000,
+                    date: todayDate[0]
+                });
+
+                newBar.save((err) => {
+                    if(err){
+                        throw err;
+                    } else {
+                        console.log(newBar);
+                    }
+                    res.end(JSON.stringify(newBar));
+                });
+                
+            }).catch((error) => {
+                console.log(error);
+            });
+
+        } else {
+            let currentBarDate = getDate(bar.offset);
+            //check if the date has expired. If it has, set going to 1 and put in the new date
+            if(bar.date !== currentBarDate){
+                //this is a rare case! If the date changes while the user is using the application, this will update accordingly
+                bar.going = 1;
+                bar.date = currentBarDate;
+                bar.save((err, bar) => {
+                    if(err) throw err;
+                    res.end(JSON.stringify(bar));
+                });
+            } else {
+                //update database going by 1.
+                bar.going = bar.going + 1;
+                bar.save((err, bar) => {
+                    if(err) throw err;
+                    res.end(JSON.stringify(bar));
+                });
+            }
+        }
     });
-    //console.log(req.body);
-    res.send(req.body);
 });
-
 
 //listen for connection
 app.listen(3000, () => {
     console.log("Connected to server");
-})
+});
+
+//get date to check against date in the DB. If they are different, reset going to 0.
+function getDate(tzOffset){
+    //getting UTC date for the server
+    let thisDate = new Date();
+    let thisOffset = thisDate.getTimezoneOffset();
+    let utcTime = thisDate.getTime() + (thisOffset * 60) * 1000;
+    //get date for the bar tzoffset is stored in seconds.
+    return strftime('%F', new Date(utcTime + tzOffset))
+}
+
+function checkDate(barId){};

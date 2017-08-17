@@ -12,22 +12,17 @@ class Element extends React.Component{
         this.handleClick = this.handleClick.bind(this);
     }
     handleClick() {
-        let lat = this.props.element.coordinates.latitude;
-        let lon = this.props.element.coordinates.longitude;
 
         axios.post('/api/going', {
-            lat: lat,
-            lon: lon
-            }).then((res) => {
-                console.log(res);
-                //TODO replace number going. State? 
-            }).catch((err) => {
-                console.log(err);
-            });
-
-        // console.log(this.props.element);
-        // console.log(test);
-        
+            lat: this.props.element.coordinates.latitude,
+            lon: this.props.element.coordinates.longitude,
+            barId: this.props.element.id
+        }).then((res) => {
+            console.log(res);
+            //TODO replace number going. State? 
+        }).catch((err) => {
+            console.log(err);
+        });    
     }
     render() {
         //console.log(this.props.element);

@@ -22,6 +22,7 @@
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.2",
     "react-dom": "^15.6.1",
+    "strftime": "^0.10.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.9.0"
   },
