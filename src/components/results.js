@@ -10,7 +10,7 @@ class Results extends React.Component {
         this.returnOneResult = this.returnOneResult.bind(this);
     }
     returnOneResult(element) {
-        return <Element element={element} key={element.id} />
+        return <Element element={element} key={element.id + Math.random().toString()} />
     }
     renderResults() {
         let content = this.props.results[0];
@@ -19,10 +19,10 @@ class Results extends React.Component {
         }
         //console.log(content.length);
         let elements = [];
-        for (var i = 0; i < content.length;i++){
+        for (var i = 0; i < content.length;i++){ 
             elements.push(this.returnOneResult(content[i]));
         }
-
+        
         return elements;   
     }
     render() {

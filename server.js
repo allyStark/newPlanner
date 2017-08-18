@@ -68,7 +68,7 @@ app.post('/api/places',(req, res) => {
                         if(err) throw err;
                         //if the bar exists, check to see if the date matches. If it does, return the bar as is,
                         //if it doesn't, update the date to the current date and set the going field to 0
-                        if(barEntry !== null && barEntry.date !== todayDate){
+                        if(barEntry !== null && barEntry.date != todayDate){
                                                 
                             barEntry.date = todayDate;
                             barEntry.going = 0;
@@ -93,6 +93,7 @@ app.post('/api/places',(req, res) => {
                             newBar.save((err) => {
                                 if(err) throw err;
                                 sendArray.push(newBar);
+                                console.log(newBar);
                                 checkForBars(i + 1);
                             });
 
@@ -113,64 +114,89 @@ app.post('/api/places',(req, res) => {
         console.log(error);
     }));
 });
-//make request to go to a bar
-app.post('/api/going',(req, res) => {
 
+app.post('/api/going', (req, res) => {
     let barId = req.body.barId;
 
-    Bar.findOne({ '_id': barId }, (err, bar) => {
+    Bar.findById(barId, (err, bar) => {
         if(err) throw err;
 
-        if(bar ==  null){
-            //no bar entry? Create a new db entry
-            //get date bar is in using timezone db. Use only if there is no entry already in the database
-            axios.get('http://api.timezonedb.com/v2/get-time-zone?key=HRB5I8FLTT7K&format=json&by=position&lat=' + req.body.lat + '&lng=' + req.body.lon)
-            .then((data) => {
-                let todayDate = data.data.formatted.split(" ");
-                console.log(data.data);
-                //create new mongo entry
-                var newBar = new Bar({
-                    _id: barId,
-                    going: 1,
-                    offset: data.data.gmtOffset * 1000,
-                    date: todayDate[0]
-                });
+        let currentDate = getDate(bar.offset);
 
-                newBar.save((err) => {
-                    if(err){
-                        throw err;
-                    } else {
-                        console.log(newBar);
-                    }
-                    res.end(JSON.stringify(newBar));
-                });
-                
-            }).catch((error) => {
-                console.log(error);
-            });
-
+        if(currentDate !== bar.date){
+            bar.date = currentDate;
+            bar.going = 1;
         } else {
-            let currentBarDate = getDate(bar.offset);
-            //check if the date has expired. If it has, set going to 1 and put in the new date
-            if(bar.date !== currentBarDate){
-                //this is a rare case! If the date changes while the user is using the application, this will update accordingly
-                bar.going = 1;
-                bar.date = currentBarDate;
-                bar.save((err, bar) => {
-                    if(err) throw err;
-                    res.end(JSON.stringify(bar));
-                });
-            } else {
-                //update database going by 1.
-                bar.going = bar.going + 1;
-                bar.save((err, bar) => {
-                    if(err) throw err;
-                    res.end(JSON.stringify(bar));
-                });
-            }
+            bar.going = bar.going + 1;
         }
+
+        bar.save((err) => {
+            if(err) throw err;
+
+            console.log('saved');
+            console.log(bar);
+            res.end(JSON.stringify(bar));
+        });
     });
 });
+//make request to go to a bar
+// app.post('/api/going',(req, res) => {
+
+//     let barId = req.body.barId;
+
+//     Bar.findOne({ '_id': barId }, (err, bar) => {
+//         if(err) throw err;
+
+//         if(bar ==  null){
+//             //no bar entry? Create a new db entry
+//             //get date bar is in using timezone db. Use only if there is no entry already in the database
+//             axios.get('http://api.timezonedb.com/v2/get-time-zone?key=HRB5I8FLTT7K&format=json&by=position&lat=' + req.body.lat + '&lng=' + req.body.lon)
+//             .then((data) => {
+//                 let todayDate = data.data.formatted.split(" ");
+//                 console.log(data.data);
+//                 //create new mongo entry
+//                 var newBar = new Bar({
+//                     _id: barId,
+//                     going: 1,
+//                     offset: data.data.gmtOffset * 1000,
+//                     date: todayDate[0]
+//                 });
+
+//                 newBar.save((err) => {
+//                     if(err){
+//                         throw err;
+//                     } else {
+//                         console.log(newBar);
+//                     }
+//                     res.end(JSON.stringify(newBar));
+//                 });
+                
+//             }).catch((error) => {
+//                 console.log(error);
+//             });
+
+//         } else {
+//             let currentBarDate = getDate(bar.offset);
+//             //check if the date has expired. If it has, set going to 1 and put in the new date
+//             if(bar.date !== currentBarDate){
+//                 //this is a rare case! If the date changes while the user is using the application, this will update accordingly
+//                 bar.going = 1;
+//                 bar.date = currentBarDate;
+//                 bar.save((err, bar) => {
+//                     if(err) throw err;
+//                     res.end(JSON.stringify(bar));
+//                 });
+//             } else {
+//                 //update database going by 1.
+//                 bar.going = bar.going + 1;
+//                 bar.save((err, bar) => {
+//                     if(err) throw err;
+//                     res.end(JSON.stringify(bar));
+//                 });
+//             }
+//         }
+//     });
+// });
 
 //listen for connection
 app.listen(3000, () => {
@@ -187,49 +213,49 @@ function getDate(tzOffset){
     return strftime('%F', new Date(utcTime + tzOffset))
 }
 //checkForBars(businesses, todayDate, offset, sendArray, i);
-function checkForBars(businesses, todayDate, offset, sendArray, i){
+// function checkForBars(businesses, todayDate, offset, sendArray, i){
 
-    if(sendArray.length === businesses.length){
-        //console.log(sendArray);
-        return sendArray;
-    }
+//     if(sendArray.length === businesses.length){
+//         //console.log(sendArray);
+//         return sendArray;
+//     }
 
-    let barData = businesses[i];
+//     let barData = businesses[i];
 
-    Bar.findOne({ _id: barData.id}, (err, barEntry) => {
-        if(err) throw err;
-        //if the bar exists, check to see if the date matches. If it does, return the bar as is,
-        //if it doesn't, update the date to the current date and set the going field to 0
-        if(barEntry !== null && barEntry.date !== todayDate){
+//     Bar.findOne({ _id: barData.id}, (err, barEntry) => {
+//         if(err) throw err;
+//         //if the bar exists, check to see if the date matches. If it does, return the bar as is,
+//         //if it doesn't, update the date to the current date and set the going field to 0
+//         if(barEntry !== null && barEntry.date !== todayDate){
                                 
-            barEntry.date = todayDate;
-            barEntry.going = 0;
+//             barEntry.date = todayDate;
+//             barEntry.going = 0;
 
-            barEntry.save((err) => {
-                if(err) throw err;
-                sendArray.push(barEntry);
-                checkForBars(businesses, todayDate, offset, sendArray, i + 1);
-            });
+//             barEntry.save((err) => {
+//                 if(err) throw err;
+//                 sendArray.push(barEntry);
+//                 checkForBars(businesses, todayDate, offset, sendArray, i + 1);
+//             });
 
-        } else if (barEntry === null){
-            //create and save the new entry
-            let newBar = new Bar({
-                _id: barData.id,
-                going: 0,
-                url: barData.url,
-                offset: offset * 1000,
-                date: todayDate
-            });
+//         } else if (barEntry === null){
+//             //create and save the new entry
+//             let newBar = new Bar({
+//                 _id: barData.id,
+//                 going: 0,
+//                 url: barData.url,
+//                 offset: offset * 1000,
+//                 date: todayDate
+//             });
 
-            newBar.save((err) => {
-                if(err) throw err;
-                sendArray.push(newBar);
-                checkForBars(businesses, todayDate, offset, sendArray, i + 1);
-            });
+//             newBar.save((err) => {
+//                 if(err) throw err;
+//                 sendArray.push(newBar);
+//                 checkForBars(businesses, todayDate, offset, sendArray, i + 1);
+//             });
 
-        } else {
-            sendArray.push(barEntry);
-            checkForBars(businesses, todayDate, offset, sendArray, i + 1);
-        }
-    });
-}
+//         } else {
+//             sendArray.push(barEntry);
+//             checkForBars(businesses, todayDate, offset, sendArray, i + 1);
+//         }
+//     });
+// }

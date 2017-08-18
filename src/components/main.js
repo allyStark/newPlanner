@@ -23,9 +23,8 @@ class Main extends React.Component {
         } else {
             document.getElementById('feedback').innerHTML = "";
             axios.post('/api/places', { location: content }).then((res) => {
-                console.log(res.data)
+   
                 let results = [res.data];
-                //console.log(results);
                 this.setState({ data: results });
                 //TODO error handling
             }).catch((err) => {
