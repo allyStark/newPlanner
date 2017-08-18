@@ -14,7 +14,7 @@ console.log(getDate(-14400 * 1000));
 app.use(express.static('static'));
 //TODO make a database entry when a bar name is clicked on
 //DB
-mongoose.connect('mongodb://localhost/planner', function(err){
+mongoose.connect('mongodb://localhost/bar', function(err){
     if(err){
         console.log("Not connected to DB");
     } else {
@@ -42,14 +42,73 @@ axios.defaults.headers.common['Authorization'] = 'Bearer 0NcJTYLBaovwIPpsNfz0-c0
 app.post('/api/places',(req, res) => {
     let location = req.body.location;
     axios.get('https://api.yelp.com/v3/businesses/search?location=' + location + '&term=bar').then((data) => {
-        let barData = data.data.businesses;
-        for (let i = 0; i < barData.length; i++){
-            console.log(barData[i]);
-        }
-        console.log(data.data.businesses);
-        let bars = data.data;
-        //TODO check against db. If entry exists, replace entry with db entry
-        res.send(bars);
+
+        let businesses = data.data.businesses;     
+        let lon = businesses[0].coordinates.longitude;
+        let lat = businesses[0].coordinates.latitude;
+        //res.send(JSON.stringify(businesses));
+        axios.get('http://api.timezonedb.com/v2/get-time-zone?key=HRB5I8FLTT7K&format=json&by=position&lat=' + lat + '&lng=' + lon)
+            .then((timeData) => {
+
+                let todayDate = timeData.data.formatted.split(" ");
+                todayDate = todayDate[0];
+                let offset = timeData.data.gmtOffset;
+                let sendArray = [];
+
+                function checkForBars(i){
+
+                    if(sendArray.length === businesses.length){
+                        res.end(JSON.stringify(sendArray));
+                        return;
+                    }
+
+                    let barData = businesses[i];
+
+                    Bar.findOne({ _id: barData.id}, (err, barEntry) => {
+                        if(err) throw err;
+                        //if the bar exists, check to see if the date matches. If it does, return the bar as is,
+                        //if it doesn't, update the date to the current date and set the going field to 0
+                        if(barEntry !== null && barEntry.date !== todayDate){
+                                                
+                            barEntry.date = todayDate;
+                            barEntry.going = 0;
+
+                            barEntry.save((err) => {
+                                if(err) throw err;
+                                sendArray.push(barEntry);
+                                checkForBars(i + 1);
+                            });
+
+                        } else if (barEntry === null){
+                            //create and save the new entry
+                            let newBar = new Bar({
+                                _id: barData.id,
+                                name: barData.name,
+                                going: 0,
+                                url: barData.url,
+                                offset: offset * 1000,
+                                date: todayDate
+                            });
+
+                            newBar.save((err) => {
+                                if(err) throw err;
+                                sendArray.push(newBar);
+                                checkForBars(i + 1);
+                            });
+
+                        } else {
+                            sendArray.push(barEntry);
+                            checkForBars(i + 1);
+                        }
+                    });
+                }
+
+            checkForBars(0);
+
+            }).catch((error) => {
+                console.log(error);
+            });
+        
     }).catch((error => {
         console.log(error);
     }));
@@ -127,5 +186,50 @@ function getDate(tzOffset){
     //get date for the bar tzoffset is stored in seconds.
     return strftime('%F', new Date(utcTime + tzOffset))
 }
+//checkForBars(businesses, todayDate, offset, sendArray, i);
+function checkForBars(businesses, todayDate, offset, sendArray, i){
 
-function checkDate(barId){};
+    if(sendArray.length === businesses.length){
+        //console.log(sendArray);
+        return sendArray;
+    }
+
+    let barData = businesses[i];
+
+    Bar.findOne({ _id: barData.id}, (err, barEntry) => {
+        if(err) throw err;
+        //if the bar exists, check to see if the date matches. If it does, return the bar as is,
+        //if it doesn't, update the date to the current date and set the going field to 0
+        if(barEntry !== null && barEntry.date !== todayDate){
+                                
+            barEntry.date = todayDate;
+            barEntry.going = 0;
+
+            barEntry.save((err) => {
+                if(err) throw err;
+                sendArray.push(barEntry);
+                checkForBars(businesses, todayDate, offset, sendArray, i + 1);
+            });
+
+        } else if (barEntry === null){
+            //create and save the new entry
+            let newBar = new Bar({
+                _id: barData.id,
+                going: 0,
+                url: barData.url,
+                offset: offset * 1000,
+                date: todayDate
+            });
+
+            newBar.save((err) => {
+                if(err) throw err;
+                sendArray.push(newBar);
+                checkForBars(businesses, todayDate, offset, sendArray, i + 1);
+            });
+
+        } else {
+            sendArray.push(barEntry);
+            checkForBars(businesses, todayDate, offset, sendArray, i + 1);
+        }
+    });
+}

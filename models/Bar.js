@@ -6,7 +6,9 @@ var BarSchema = mongoose.Schema({
         type: String,
         index: true
     },
+    name: String,
     going: Number,
+    url: String,
     offset: Number,
     date: String
 });

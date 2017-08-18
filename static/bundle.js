@@ -41879,42 +41879,7 @@ class Element extends React.Component {
     }
     render() {
         //console.log(this.props.element);
-        return React.createElement(
-            Row,
-            { className: 'results-row' },
-            React.createElement(
-                Col,
-                { md: 3, className: 'results-name text-center' },
-                this.props.element.name
-            ),
-            React.createElement(
-                Col,
-                { md: 3 },
-                React.createElement(
-                    Button,
-                    { bsSize: 'large', className: 'results-going', id: this.props.element.name, onClick: this.handleClick },
-                    'Going?'
-                )
-            ),
-            React.createElement(
-                Col,
-                { className: 'people-going text-center', id: this.props.element.name + "peoplegoing", md: 4 },
-                'There are 0 people going here tonight.'
-            ),
-            React.createElement(
-                Col,
-                { md: 2 },
-                React.createElement(
-                    'a',
-                    { href: this.props.element.url },
-                    React.createElement(
-                        Button,
-                        { bsSize: 'large' },
-                        React.createElement('img', { className: 'result-yelp', src: './images/yelplogo.png' })
-                    )
-                )
-            )
-        );
+        return React.createElement(Row, { className: 'results-row' }, React.createElement(Col, { md: 3, className: 'results-name text-center' }, this.props.element.name), React.createElement(Col, { md: 3 }, React.createElement(Button, { bsSize: 'large', className: 'results-going', id: this.props.element.name, onClick: this.handleClick }, 'Going?')), React.createElement(Col, { className: 'people-going text-center', id: this.props.element.name + "peoplegoing", md: 4 }, 'There are 0 people going here tonight.'), React.createElement(Col, { md: 2 }, React.createElement('a', { href: this.props.element.url }, React.createElement(Button, { bsSize: 'large' }, React.createElement('img', { className: 'result-yelp', src: './images/yelplogo.png' })))));
     }
 }
 
@@ -41946,7 +41911,9 @@ class Main extends React.Component {
         } else {
             document.getElementById('feedback').innerHTML = "";
             axios.post('/api/places', { location: content }).then(res => {
-                let results = [res.data.businesses];
+                console.log(res.data);
+                let results = [res.data];
+                //console.log(results);
                 this.setState({ data: results });
                 //TODO error handling
             }).catch(err => {
@@ -41955,55 +41922,7 @@ class Main extends React.Component {
         }
     }
     render() {
-        return React.createElement(
-            Grid,
-            null,
-            React.createElement(
-                Row,
-                null,
-                React.createElement(
-                    'p',
-                    null,
-                    '- Search for bars in your area and see who is going to be there!'
-                ),
-                React.createElement(
-                    'p',
-                    null,
-                    '- If you live in a big city with lots of bars, try to include the street name or neighbourhood'
-                ),
-                React.createElement(
-                    'p',
-                    null,
-                    '- Drink responsibly! Or don\'t, that\'s up to you.'
-                ),
-                React.createElement(
-                    'p',
-                    null,
-                    '- Hit the giant Yelp button to get more info about the bar you are interested in!'
-                )
-            ),
-            React.createElement(
-                Row,
-                null,
-                React.createElement(
-                    'div',
-                    { className: 'form-group' },
-                    React.createElement(
-                        'label',
-                        null,
-                        'Enter Your Location'
-                    ),
-                    React.createElement('input', { type: 'text', className: 'form-control', id: 'location' }),
-                    React.createElement(
-                        Button,
-                        { block: true, onClick: this.validateForm },
-                        'Find Me Some Bars!'
-                    ),
-                    React.createElement('div', { id: 'feedback', className: 'feedback' })
-                )
-            ),
-            React.createElement(Results, { results: this.state.data })
-        );
+        return React.createElement(Grid, null, React.createElement(Row, null, React.createElement('p', null, '- Search for bars in your area and see who is going to be there!'), React.createElement('p', null, '- If you live in a big city with lots of bars, try to include the street name or neighbourhood'), React.createElement('p', null, '- Drink responsibly! Or don\'t, that\'s up to you.'), React.createElement('p', null, '- Hit the giant Yelp button to get more info about the bar you are interested in!')), React.createElement(Row, null, React.createElement('div', { className: 'form-group' }, React.createElement('label', null, 'Enter Your Location'), React.createElement('input', { type: 'text', className: 'form-control', id: 'location' }), React.createElement(Button, { block: true, onClick: this.validateForm }, 'Find Me Some Bars!'), React.createElement('div', { id: 'feedback', className: 'feedback' }))), React.createElement(Results, { results: this.state.data }));
     }
 }
 
@@ -42099,11 +42018,7 @@ class Results extends React.Component {
         return elements;
     }
     render() {
-        return React.createElement(
-            'div',
-            null,
-            this.renderResults()
-        );
+        return React.createElement('div', null, this.renderResults());
     }
 }
 
