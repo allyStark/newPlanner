@@ -1,10 +1,30 @@
-var express = require('express');
-var router = new express.Router();
-var axios = require('axios');
-var strftime = require('strftime');
-var mongoose = require('mongoose');
+const express = require('express');
+const router = new express.Router();
+const path = require('path');
+const axios = require('axios');
+const strftime = require('strftime');
+const mongoose = require('mongoose');
+const jwt = require('express-jwt');
+const jwks = require('jwks-rsa');
+const cors = require('cors');
+//use cors
+router.use(cors());
 
-var Bar = require('./models/Bar');
+const Bar = require('./models/Bar');
+
+//authorization check
+const authCheck = jwt({
+    secret: jwks.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: "https://allyauth.auth0.com/.well-known/jwks.json"
+    }),
+    //API identifier
+    audience: 'http://goingtobar.com',
+    issuer: "https://allyauth.auth0.com/",
+    algorithms: ['RS256']
+});
 
 //TODO use these as environment variables for production
 const yelpToken = {
@@ -25,7 +45,7 @@ router.post('/api/places',(req, res) => {
         let businesses = data.data.businesses;     
         let lon = businesses[0].coordinates.longitude;
         let lat = businesses[0].coordinates.latitude;
-
+        //get the current date for the location
         axios.get('http://api.timezonedb.com/v2/get-time-zone?key=HRB5I8FLTT7K&format=json&by=position&lat=' + lat + '&lng=' + lon)
             .then((timeData) => {
 
@@ -93,7 +113,7 @@ router.post('/api/places',(req, res) => {
     }));
 });
 
-router.post('/api/going', (req, res) => {
+router.post('/api/going', authCheck, (req, res) => {
     let barId = req.body.barId;
 
     Bar.findById(barId, (err, bar) => {
@@ -113,6 +133,11 @@ router.post('/api/going', (req, res) => {
             res.end(JSON.stringify(bar));
         });
     });
+});
+
+//let client side react-router deal with callback
+router.get('/callback', (req,res) => {
+    res.sendFile(path.resolve(__dirname, 'static/index.html'));
 });
 
 //get date to check against date in the DB. If they are different, reset going to 0.
