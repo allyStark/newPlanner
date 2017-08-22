@@ -55726,7 +55726,17 @@ const browserHistory = require('react-router').browserHistory;
 
 class Page extends React.Component {
     render() {
-        return React.createElement('div', null, React.createElement(Navi, null), React.createElement(Router, { history: browserHistory }, React.createElement(Route, { path: '/', component: Main }), React.createElement(Route, { path: '/callback', component: Callback })));
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(Navi, null),
+            React.createElement(
+                Router,
+                { history: browserHistory },
+                React.createElement(Route, { path: '/', component: Main }),
+                React.createElement(Route, { path: '/callback', component: Callback })
+            )
+        );
     }
 }
 
@@ -55938,25 +55948,33 @@ class Main extends React.Component {
 module.exports = Main;
 
 },{"./results":589,"axios":34,"react":569,"react-bootstrap":356}],588:[function(require,module,exports){
-var React = require('react');
+const React = require('react');
+const auth0 = require('auth0-js');
+const axios = require('axios');
 
-var Navbar = require('react-bootstrap').Navbar;
-var Nav = require('react-bootstrap').Nav;
-var NavItem = require('react-bootstrap').NavItem;
-var NavDropdown = require('react-bootstrap').NavDropdown;
-var MenuItem = require('react-bootstrap').MenuItem;
+const Navbar = require('react-bootstrap').Navbar;
+const Nav = require('react-bootstrap').Nav;
+const NavItem = require('react-bootstrap').NavItem;
+const NavDropdown = require('react-bootstrap').NavDropdown;
+const MenuItem = require('react-bootstrap').MenuItem;
 
 const isLoggedIn = require('../utils/authservice.js').isLoggedIn;
 const login = require('../utils/authservice.js').login;
 const logout = require('../utils/authservice.js').logout;
+const getProfile = require('../utils/authservice').getProfile;
+const getAccessToken = require('../utils/authservice').getAccessToken;
 
 class Navi extends React.Component {
     constructor() {
         super();
 
         this.handleClick = this.handleClick.bind(this);
+        this.testClick = this.testClick.bind(this);
+        this.returnUser = this.returnUser.bind(this);
 
-        this.state = { loggedIn: false };
+        this.state = { loggedIn: false,
+            userName: null
+        };
     }
     handleClick() {
         if (!isLoggedIn()) {
@@ -55967,43 +55985,29 @@ class Navi extends React.Component {
             this.setState({ loggedIn: false });
         }
     }
+    testClick() {
+        let token = getAccessToken();
+        axios.defaults.headers.common['Authorization'] = token;
+        axios.get('https://allyauth.auth0.com/api/v2/users/' + token + '?include_fields=true', profile => {
+            console.log("Hi " + profile);
+        });
+        // if(!token){
+        //     throw new Error('No access token was found');
+        // }
+        // let profile = getProfile(token);
+        // console.log(profile);
+    }
+    returnUser() {
+        return;
+    }
     render() {
-        return React.createElement(
-            Navbar,
-            { className: 'main-nav' },
-            React.createElement(
-                Navbar.Header,
-                null,
-                React.createElement(
-                    Navbar.Brand,
-                    null,
-                    React.createElement(
-                        'a',
-                        { href: '#' },
-                        'Where Ya Drinkin?'
-                    )
-                )
-            ),
-            React.createElement(
-                Nav,
-                { className: 'pull-right' },
-                isLoggedIn() ? React.createElement(
-                    NavItem,
-                    { onClick: this.handleClick },
-                    'Logout'
-                ) : React.createElement(
-                    NavItem,
-                    { onClick: this.handleClick },
-                    'Login'
-                )
-            )
-        );
+        return React.createElement(Navbar, { className: 'main-nav' }, React.createElement(Navbar.Header, null, React.createElement(Navbar.Brand, null, React.createElement('a', { href: '#' }, 'Where Ya Drinkin?'))), React.createElement(Nav, { className: 'pull-right' }, isLoggedIn() ? React.createElement(NavItem, { onClick: this.handleClick }, 'Logout') : React.createElement(NavItem, { onClick: this.handleClick }, 'Login'), isLoggedIn() ? React.createElement(NavItem, { onClick: this.testClick }, 'Test') : React.createElement(NavItem, null), isLoggedIn() ? React.createElement(NavItem, null, this.returnUser) : React.createElement(NavItem, null)));
     }
 }
 
 module.exports = Navi;
 
-},{"../utils/authservice.js":590,"react":569,"react-bootstrap":356}],589:[function(require,module,exports){
+},{"../utils/authservice":590,"../utils/authservice.js":590,"auth0-js":24,"axios":34,"react":569,"react-bootstrap":356}],589:[function(require,module,exports){
 var React = require('react');
 
 var Element = require('./element');
@@ -56059,7 +56063,8 @@ const AUDIENCE = 'http://goingtobar.com';
 
 var auth = new auth0.WebAuth({
   clientID: CLIENT_ID,
-  domain: CLIENT_DOMAIN
+  domain: CLIENT_DOMAIN,
+  scope: 'openid'
 });
 
 module.exports.login = function () {
@@ -56138,5 +56143,15 @@ function isTokenExpired(token) {
   const expirationDate = getTokenExpirationDate(token);
   return expirationDate < new Date();
 }
+
+module.exports.getProfile = function (accessToken) {
+  console.log(accessToken);
+  auth.client.userInfo(accessToken, (err, profile) => {
+    if (profile) {
+      return profile;
+    }
+    console.log(err);
+  });
+};
 
 },{"auth0-js":24,"jwt-decode":247,"react-router":537}]},{},[584]);

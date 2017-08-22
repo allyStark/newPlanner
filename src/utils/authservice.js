@@ -14,7 +14,8 @@ const AUDIENCE = 'http://goingtobar.com';
 
 var auth = new auth0.WebAuth({
   clientID: CLIENT_ID, 
-  domain: CLIENT_DOMAIN
+  domain: CLIENT_DOMAIN,
+  scope: 'openid'
 });
 
 module.exports.login = function() {
@@ -90,4 +91,14 @@ function getTokenExpirationDate(encodedToken) {
 function isTokenExpired(token) {
   const expirationDate = getTokenExpirationDate(token); 
   return expirationDate < new Date();
+}
+
+module.exports.getProfile = function(accessToken){
+  console.log(accessToken);
+  auth.client.userInfo(accessToken, (err, profile) => {
+    if(profile){
+      return profile
+    }
+    console.log(err);
+  })
 }
