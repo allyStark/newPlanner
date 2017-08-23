@@ -22,34 +22,28 @@ class Navi extends React.Component {
         this.testClick = this.testClick.bind(this);
         this.returnUser = this.returnUser.bind(this);
 
-        this.state = { loggedIn: false,
-                       userName: null 
+        this.state = { 
+                        loggedIn: false,
+                        userName: null 
                     };
     }
     handleClick(){
         if(!isLoggedIn()){
             login();
-            this.setState({ loggedIn: true });
         } else {
             logout();
-            this.setState({ loggedIn: false }); 
+            this.setState({ loggedIn: false, userName: null }); 
         }
     }
     testClick(){
-        let token = getAccessToken();
-        // axios.defaults.headers.common['Authorization'] = token;
-        // axios.get('https://allyauth.auth0.com/api/v2/users/' + token + '?include_fields=true', (profile) => {
-        //     console.log("Hi " + profile);
-        // });
-        if(!token){
-            throw new Error('No access token was found');
-        }
-        let profile = getProfile(token);
-        console.log(profile);
+        //let token = getAccessToken(); 
         
-    }
+    } 
     returnUser(){
-        return;
+        let profile = getProfile(getAccessToken(), (profile) => {
+            localStorage.setItem('user_name', profile.nickname);
+            this.setState({ userName: profile.nickname, loggedIn: true });
+        });
     }
     render() {
         return(
@@ -60,15 +54,11 @@ class Navi extends React.Component {
             </Navbar.Brand>
             </Navbar.Header>
             <Nav className="pull-right">
+            {(isLoggedIn() && (!this.state.userName)) ? ( this.returnUser() ) : null }
+            <NavItem>{this.state.userName}</NavItem>
             {
                 (isLoggedIn()) ? ( <NavItem onClick={this.handleClick}>Logout</NavItem> ) : ( <NavItem onClick={this.handleClick}>Login</NavItem> )
             } 
-            {
-                (isLoggedIn()) ? ( <NavItem onClick={this.testClick}>Test</NavItem> ) : <NavItem />
-            } 
-            {
-                (isLoggedIn()) ? ( <NavItem>{this.returnUser}</ NavItem> ) : <NavItem />
-            }
             </Nav>
         </Navbar> 
         ) 

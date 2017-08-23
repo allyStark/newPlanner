@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = require('mongoose').Schema;
+const mongoose = require('mongoose');
+const Schema = require('mongoose').Schema;
 
-var BarSchema = mongoose.Schema({
+const BarSchema = mongoose.Schema({
     _id: {
         type: String,
         index: true
@@ -10,7 +10,8 @@ var BarSchema = mongoose.Schema({
     going: Number,
     url: String,
     offset: Number,
-    date: String
+    date: String,
+    attending: [String]
 });
 
-var Bar = module.exports = mongoose.model('Bar', BarSchema);
+const Bar = module.exports = mongoose.model('Bar', BarSchema);

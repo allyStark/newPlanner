@@ -55795,15 +55795,18 @@ class Element extends React.Component {
             login();
         } else {
             let token = getAccessToken();
+            let attendee = localStorage.getItem('user_name');
             axios.defaults.headers.common['Authorization'] = "Bearer " + token;
             axios.post('/api/going', {
-                barId: this.state._id
+                barId: this.state._id,
+                attendee: attendee
             }).then(res => {
                 this.setState({
                     name: res.data.name,
                     _id: res.data._id,
                     going: res.data.going,
-                    url: res.data.url
+                    url: res.data.url,
+                    attending: res.data.attending
                 });
             }).catch(err => {
                 console.log(err);
@@ -55811,47 +55814,8 @@ class Element extends React.Component {
         }
     }
     render() {
-        console.log(this.state);
-        return React.createElement(
-            Row,
-            { className: 'results-row', key: this.state._id + "elementRow" },
-            React.createElement(
-                Col,
-                { md: 3, className: 'results-name text-center' },
-                this.state.name
-            ),
-            isLoggedIn() ? React.createElement(
-                Col,
-                { md: 3 },
-                React.createElement(
-                    Button,
-                    { bsSize: 'large', className: 'results-going', id: this.state.name, onClick: this.handleClick },
-                    'Going?'
-                )
-            ) : React.createElement(
-                Col,
-                { md: 7 },
-                'Login to attend'
-            ),
-            isLoggedIn() ? React.createElement(
-                Col,
-                { className: 'people-going text-center', id: this.state._id + "peoplegoing", md: 4 },
-                this.state.going
-            ) : React.createElement('div', null),
-            React.createElement(
-                Col,
-                { md: 2 },
-                React.createElement(
-                    'a',
-                    { href: this.state.url },
-                    React.createElement(
-                        Button,
-                        { bsSize: 'large' },
-                        React.createElement('img', { className: 'result-yelp', src: './images/yelplogo.png' })
-                    )
-                )
-            )
-        );
+        console.log(this.props);
+        return React.createElement(Row, { className: 'results-row', key: this.state._id + "elementRow" }, React.createElement(Col, { md: 3, className: 'results-name text-center' }, this.state.name), isLoggedIn() ? React.createElement(Col, { md: 3 }, React.createElement(Button, { bsSize: 'large', className: 'results-going', id: this.state.name, onClick: this.handleClick }, 'Going?')) : React.createElement(Col, { md: 7 }, 'Login to attend'), isLoggedIn() ? React.createElement(Col, { className: 'people-going text-center', id: this.state._id + "peoplegoing", md: 4 }, this.state.going) : React.createElement('div', null), React.createElement(Col, { md: 2 }, React.createElement('a', { href: this.state.url }, React.createElement(Button, { bsSize: 'large' }, React.createElement('img', { className: 'result-yelp', src: './images/yelplogo.png' })))));
     }
 }
 //Hi
@@ -55893,55 +55857,7 @@ class Main extends React.Component {
         }
     }
     render() {
-        return React.createElement(
-            Grid,
-            null,
-            React.createElement(
-                Row,
-                null,
-                React.createElement(
-                    'p',
-                    null,
-                    '- Search for bars in your area and see who is going to be there!'
-                ),
-                React.createElement(
-                    'p',
-                    null,
-                    '- If you live in a big city with lots of bars, try to include the street name or neighbourhood'
-                ),
-                React.createElement(
-                    'p',
-                    null,
-                    '- Drink responsibly! Or don\'t, that\'s up to you.'
-                ),
-                React.createElement(
-                    'p',
-                    null,
-                    '- Hit the giant Yelp button to get more info about the bar you are interested in!'
-                )
-            ),
-            React.createElement(
-                Row,
-                null,
-                React.createElement(
-                    'div',
-                    { className: 'form-group' },
-                    React.createElement(
-                        'label',
-                        null,
-                        'Enter Your Location'
-                    ),
-                    React.createElement('input', { type: 'text', className: 'form-control', id: 'location' }),
-                    React.createElement(
-                        Button,
-                        { block: true, onClick: this.validateForm },
-                        'Find Me Some Bars!'
-                    ),
-                    React.createElement('div', { id: 'feedback', className: 'feedback' })
-                )
-            ),
-            React.createElement(Results, { results: this.state.data })
-        );
+        return React.createElement(Grid, null, React.createElement(Row, null, React.createElement('p', null, '- Search for bars in your area and see who is going to be there!'), React.createElement('p', null, '- If you live in a big city with lots of bars, try to include the street name or neighbourhood'), React.createElement('p', null, '- Drink responsibly! Or don\'t, that\'s up to you.'), React.createElement('p', null, '- Hit the giant Yelp button to get more info about the bar you are interested in!')), React.createElement(Row, null, React.createElement('div', { className: 'form-group' }, React.createElement('label', null, 'Enter Your Location'), React.createElement('input', { type: 'text', className: 'form-control', id: 'location' }), React.createElement(Button, { block: true, onClick: this.validateForm }, 'Find Me Some Bars!'), React.createElement('div', { id: 'feedback', className: 'feedback' }))), React.createElement(Results, { results: this.state.data }));
     }
 }
 
@@ -55972,45 +55888,40 @@ class Navi extends React.Component {
         this.testClick = this.testClick.bind(this);
         this.returnUser = this.returnUser.bind(this);
 
-        this.state = { loggedIn: false,
+        this.state = {
+            loggedIn: false,
             userName: null
         };
     }
     handleClick() {
         if (!isLoggedIn()) {
             login();
-            this.setState({ loggedIn: true });
         } else {
             logout();
-            this.setState({ loggedIn: false });
+            this.setState({ loggedIn: false, userName: null });
         }
     }
     testClick() {
-        let token = getAccessToken();
-        axios.defaults.headers.common['Authorization'] = token;
-        axios.get('https://allyauth.auth0.com/api/v2/users/' + token + '?include_fields=true', profile => {
-            console.log("Hi " + profile);
-        });
-        // if(!token){
-        //     throw new Error('No access token was found');
-        // }
-        // let profile = getProfile(token);
-        // console.log(profile);
+        //let token = getAccessToken(); 
+
     }
     returnUser() {
-        return;
+        let profile = getProfile(getAccessToken(), profile => {
+            localStorage.setItem('user_name', profile.nickname);
+            this.setState({ userName: profile.nickname, loggedIn: true });
+        });
     }
     render() {
-        return React.createElement(Navbar, { className: 'main-nav' }, React.createElement(Navbar.Header, null, React.createElement(Navbar.Brand, null, React.createElement('a', { href: '#' }, 'Where Ya Drinkin?'))), React.createElement(Nav, { className: 'pull-right' }, isLoggedIn() ? React.createElement(NavItem, { onClick: this.handleClick }, 'Logout') : React.createElement(NavItem, { onClick: this.handleClick }, 'Login'), isLoggedIn() ? React.createElement(NavItem, { onClick: this.testClick }, 'Test') : React.createElement(NavItem, null), isLoggedIn() ? React.createElement(NavItem, null, this.returnUser) : React.createElement(NavItem, null)));
+        return React.createElement(Navbar, { className: 'main-nav' }, React.createElement(Navbar.Header, null, React.createElement(Navbar.Brand, null, React.createElement('a', { href: '#' }, 'Where Ya Drinkin?'))), React.createElement(Nav, { className: 'pull-right' }, isLoggedIn() && !this.state.userName ? this.returnUser() : null, React.createElement(NavItem, null, this.state.userName), isLoggedIn() ? React.createElement(NavItem, { onClick: this.handleClick }, 'Logout') : React.createElement(NavItem, { onClick: this.handleClick }, 'Login')));
     }
 }
 
 module.exports = Navi;
 
 },{"../utils/authservice":590,"../utils/authservice.js":590,"auth0-js":24,"axios":34,"react":569,"react-bootstrap":356}],589:[function(require,module,exports){
-var React = require('react');
+const React = require('react');
 
-var Element = require('./element');
+const Element = require('./element');
 
 class Results extends React.Component {
     constructor(props) {
@@ -56039,6 +55950,12 @@ class Results extends React.Component {
         return React.createElement(
             'div',
             null,
+            this.props.results[0][0].date ? React.createElement(
+                'h2',
+                null,
+                'Showing plans for ',
+                this.props.results[0][0].date
+            ) : React.createElement('h2', null),
             this.renderResults()
         );
     }
@@ -56058,21 +55975,19 @@ const ACCESS_TOKEN_KEY = 'access_token';
 const CLIENT_ID = 'MtW7JNeO8iQ2elHzUOsavLJlFKD66Koo';
 const CLIENT_DOMAIN = 'allyauth.auth0.com';
 const REDIRECT = 'http://localhost:3000/callback';
-const SCOPE = 'read:going';
 const AUDIENCE = 'http://goingtobar.com';
 
 var auth = new auth0.WebAuth({
   clientID: CLIENT_ID,
   domain: CLIENT_DOMAIN,
-  scope: 'openid'
+  scope: 'openid profile'
 });
 
 module.exports.login = function () {
   auth.authorize({
     responseType: 'token id_token',
     redirectUri: REDIRECT,
-    audience: AUDIENCE,
-    scope: SCOPE
+    audience: AUDIENCE
   });
 };
 
@@ -56144,13 +56059,16 @@ function isTokenExpired(token) {
   return expirationDate < new Date();
 }
 
-module.exports.getProfile = function (accessToken) {
-  console.log(accessToken);
+module.exports.getProfile = function (accessToken, callback) {
+  //let accessToken = this.getAccessToken();
   auth.client.userInfo(accessToken, (err, profile) => {
+    //console.log(profile);
     if (profile) {
-      return profile;
+      callback(profile);
     }
-    console.log(err);
+
+    //TODO add callback to deal with async
+    if (err) throw err;
   });
 };
 

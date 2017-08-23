@@ -26,15 +26,18 @@ class Element extends React.Component{
             login();
         } else {
             let token = getAccessToken();
+            let attendee = localStorage.getItem('user_name');
             axios.defaults.headers.common['Authorization'] = "Bearer " + token;
             axios.post('/api/going', {
-                barId: this.state._id
+                barId: this.state._id,
+                attendee: attendee
             }).then((res) => {
                 this.setState({
                     name : res.data.name,
                     _id : res.data._id,
                     going : res.data.going,
-                    url : res.data.url
+                    url : res.data.url,
+                    attending: res.data.attending
                 }); 
 
             }).catch((err) => {
@@ -43,7 +46,7 @@ class Element extends React.Component{
         }    
     }
     render() {
-        console.log(this.state);
+        console.log(this.props);
         return( 
             <Row className="results-row" key={this.state._id + "elementRow"}>
                 <Col md={3} className="results-name text-center">{this.state.name}</Col>           

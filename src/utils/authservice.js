@@ -9,13 +9,12 @@ const ACCESS_TOKEN_KEY = 'access_token';
 const CLIENT_ID = 'MtW7JNeO8iQ2elHzUOsavLJlFKD66Koo';
 const CLIENT_DOMAIN = 'allyauth.auth0.com';
 const REDIRECT = 'http://localhost:3000/callback';
-const SCOPE = 'read:going';
 const AUDIENCE = 'http://goingtobar.com';
 
 var auth = new auth0.WebAuth({
   clientID: CLIENT_ID, 
   domain: CLIENT_DOMAIN,
-  scope: 'openid'
+  scope: 'openid profile'
 });
 
 module.exports.login = function() {
@@ -23,7 +22,6 @@ module.exports.login = function() {
     responseType: 'token id_token',
     redirectUri: REDIRECT,
     audience: AUDIENCE,
-    scope: SCOPE
   });
 }
 
@@ -93,12 +91,15 @@ function isTokenExpired(token) {
   return expirationDate < new Date();
 }
 
-module.exports.getProfile = function(accessToken){
-  console.log(accessToken);
+module.exports.getProfile = function(accessToken, callback){
+  //let accessToken = this.getAccessToken();
   auth.client.userInfo(accessToken, (err, profile) => {
+    //console.log(profile);
     if(profile){
-      return profile
+      callback(profile);
     }
-    console.log(err);
+    
+    //TODO add callback to deal with async
+    if(err) throw err;
   })
 }

@@ -71,6 +71,7 @@ router.post('/api/places',(req, res) => {
                                                 
                             barEntry.date = todayDate;
                             barEntry.going = 0;
+                            barEntry.attending = [];
 
                             barEntry.save((err) => {
                                 if(err) throw err;
@@ -86,7 +87,8 @@ router.post('/api/places',(req, res) => {
                                 going: 0,
                                 url: barData.url,
                                 offset: offset * 1000,
-                                date: todayDate
+                                date: todayDate,
+                                attending: []
                             });
 
                             newBar.save((err) => {
@@ -118,7 +120,7 @@ router.post('/api/going', authCheck, (req, res) => {
 
     Bar.findById(barId, (err, bar) => {
         if(err) throw err;
-
+        bar.attending.push(req.body.attendee);
         let currentDate = getDate(bar.offset);
 
         if(currentDate !== bar.date){

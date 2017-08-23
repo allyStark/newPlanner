@@ -1,6 +1,6 @@
-var React = require('react');
+const React = require('react');
 
-var Element = require('./element');
+const Element = require('./element');
 
 class Results extends React.Component {
     constructor(props){
@@ -28,6 +28,7 @@ class Results extends React.Component {
     render() {
         return(
         <div>
+            { (this.props.results[0][0].date) ? ( <h2>Showing plans for {this.props.results[0][0].date}</h2> ) : (<h2></h2>) }
             {this.renderResults()}
         </div>
         )
