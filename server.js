@@ -24,6 +24,6 @@ app.use(bodyParser.json());
 app.use(require("./router"));
 
 //listen for connection
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("Connected to server");
 });
