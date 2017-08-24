@@ -51,7 +51,7 @@ class Main extends React.Component {
                 <div className="form-group">    
                     <label>Enter Your Location</label>
                     <input type="text" className="form-control" id="location" />
-                    <Button block onClick={this.validateForm}>Find Me Some Bars!</Button>
+                    <Button block onClick={this.validateForm}>Find Me Some Bars!!!</Button>
                     <div id="feedback" className="feedback"></div>
                 </div>
             </Row>

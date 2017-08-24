@@ -14,8 +14,6 @@ gulp.task('watch', function() {
 
     gulp.watch('src/stylesheets/style.scss', ['sass']);
 
-    process.env.NODE_ENV = 'production';
-
     let b = browserify({
         entries: ['src/app.js'],
         cache: {}, packageCache: {},
@@ -24,7 +22,8 @@ gulp.task('watch', function() {
 
     b.on('update', makeBundle)
 
-    function makeBundle() { 
+    function makeBundle() {
+        process.env.NODE_ENV = 'production'; 
         b.transform('babelify', { presets: 'react' })
         .bundle()
         .on('error', (err) => {
