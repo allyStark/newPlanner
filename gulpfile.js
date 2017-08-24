@@ -4,14 +4,6 @@ const source = require('vinyl-source-stream');
 const watchify = require('watchify');
 const sass = require('gulp-sass');
 
-// gulp.task('bundle', function() {
-//     return browserify('src/app.js')
-//         .transform('babelify', {presets: 'react'})
-//         .bundle()
-//         .pipe(source('bundle.js'))
-//         .pipe(gulp.dest('static/'));
-// });
-
 gulp.task('sass', function(){
     return gulp.src('src/stylesheets/style.scss')
         .pipe(sass())
@@ -28,7 +20,7 @@ gulp.task('watch', function() {
         plugin: ['watchify']
     });
 
-    b.on('update', makeBundle);
+    b.on('update', makeBundle)
 
     function makeBundle() {
         b.transform('babelify', { presets: 'react' })
@@ -36,7 +28,7 @@ gulp.task('watch', function() {
         .on('error', (err) => {
             console.error(err.message);
             console.error(err.codeFrame);
-        })
+        }) 
         .pipe(source('bundle.js'))
         .pipe(gulp.dest('static/'));
     }

@@ -147,7 +147,7 @@ router.post('/api/going', authCheck, (req, res) => {
 //let client side react-router deal with url callback
 router.get('/callback', (req,res) => {
     res.sendFile(path.resolve(__dirname, 'static/index.html'));
-});
+}); 
 
 //get date to check against date in the DB. If they are different, reset going to 0.
 function getDate(tzOffset){

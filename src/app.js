@@ -17,11 +17,11 @@ class Page extends React.Component{
             <Router history={browserHistory}>
                 <Route path="/" component={Main} />
                 <Route path="/callback" component={Callback} />
-            </Router>
+            </Router>  
             </div>
         )
     }
-}
+} 
 
 ReactDOM.render(<Page />,
- document.getElementById('main'));
+ document.getElementById('main')); 

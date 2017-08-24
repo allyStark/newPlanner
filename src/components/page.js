@@ -7,7 +7,7 @@ class Page extends React.Component{
     render() {
         return (
             <div>
-            <Navi />
+            <Navi /> 
             <Main />
             </div>
         )

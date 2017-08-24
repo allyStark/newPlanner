@@ -55930,7 +55930,76 @@ class Main extends React.Component {
         }
     }
     render() {
-        return React.createElement(Grid, null, React.createElement('div', { className: 'picture' }, React.createElement(Row, { className: 'instructions' }, React.createElement('br', null), React.createElement('p', null, '- Create an account and login.'), React.createElement('p', null, '- Search for bars in your area and see who is going to be there!'), React.createElement('p', null, '- If you live in a big city with lots of bars, try to include the street name or neighbourhood.'), React.createElement('p', null, '- Press the giant \'Going?\' button to declare your intentions to go to the bar!'), React.createElement('p', null, '- Hit the giant Yelp button to get more info about the bar you are interested in!'), React.createElement('p', null, '- When the date changes at the bars local time, the people going will reset to 0.'), React.createElement('p', null, '- Drink responsibly! Or don\'t, that\'s up to you.'), React.createElement('br', null)), React.createElement(Row, null, React.createElement('div', { className: 'form-group' }, React.createElement('label', null, 'Enter Your Location'), React.createElement('input', { type: 'text', className: 'form-control', id: 'location' }), React.createElement(Button, { block: true, onClick: this.validateForm }, 'Find Me Some Bars!'), React.createElement('div', { id: 'feedback', className: 'feedback' })))), React.createElement(Results, { results: this.state.data }));
+        return React.createElement(
+            Grid,
+            null,
+            React.createElement(
+                'div',
+                { className: 'picture' },
+                React.createElement(
+                    Row,
+                    { className: 'instructions' },
+                    React.createElement('br', null),
+                    React.createElement(
+                        'p',
+                        null,
+                        '- Create an account and login.'
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        '- Search for bars in your area and see who is going to be there!'
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        '- If you live in a big city with lots of bars, try to include the street name or neighbourhood.'
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        '- Press the giant \'Going?\' button to declare your intentions to go to the bar!'
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        '- Hit the giant Yelp button to get more info about the bar you are interested in!'
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        '- When the date changes at the bars local time, the people going will reset to 0.'
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        '- Drink responsibly! Or don\'t, that\'s up to you.'
+                    ),
+                    React.createElement('br', null)
+                ),
+                React.createElement(
+                    Row,
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'form-group' },
+                        React.createElement(
+                            'label',
+                            null,
+                            'Enter Your Location'
+                        ),
+                        React.createElement('input', { type: 'text', className: 'form-control', id: 'location' }),
+                        React.createElement(
+                            Button,
+                            { block: true, onClick: this.validateForm },
+                            'Find Me Some Bars!'
+                        ),
+                        React.createElement('div', { id: 'feedback', className: 'feedback' })
+                    )
+                )
+            ),
+            React.createElement(Results, { results: this.state.data })
+        );
     }
 }
 
@@ -55980,7 +56049,42 @@ class Navi extends React.Component {
         });
     }
     render() {
-        return React.createElement(Navbar, { className: 'main-nav' }, React.createElement(Navbar.Header, null, React.createElement(Navbar.Brand, null, React.createElement('a', { className: 'brand' }, 'Where Ya Drinkin?'))), React.createElement(Nav, { className: 'pull-right' }, isLoggedIn() && !this.state.userName ? this.returnUser() : null, React.createElement(NavItem, null, this.state.userName), isLoggedIn() ? React.createElement(NavItem, { onClick: this.handleClick }, 'Logout') : React.createElement(NavItem, { onClick: this.handleClick }, 'Login')));
+        return React.createElement(
+            Navbar,
+            { className: 'main-nav' },
+            React.createElement(
+                Navbar.Header,
+                null,
+                React.createElement(
+                    Navbar.Brand,
+                    null,
+                    React.createElement(
+                        'a',
+                        { className: 'brand' },
+                        'Where Ya Drinkin?'
+                    )
+                )
+            ),
+            React.createElement(
+                Nav,
+                { className: 'pull-right' },
+                isLoggedIn() && !this.state.userName ? this.returnUser() : null,
+                React.createElement(
+                    NavItem,
+                    null,
+                    this.state.userName
+                ),
+                isLoggedIn() ? React.createElement(
+                    NavItem,
+                    { onClick: this.handleClick },
+                    'Logout'
+                ) : React.createElement(
+                    NavItem,
+                    { onClick: this.handleClick },
+                    'Login'
+                )
+            )
+        );
     }
 }
 
@@ -56040,7 +56144,7 @@ const ACCESS_TOKEN_KEY = 'access_token';
 
 const CLIENT_ID = 'MtW7JNeO8iQ2elHzUOsavLJlFKD66Koo';
 const CLIENT_DOMAIN = 'allyauth.auth0.com';
-const REDIRECT = 'http://localhost:3000/callback';
+const REDIRECT = 'https://barplanner.herokuapp.com/callback';
 const AUDIENCE = 'http://goingtobar.com';
 
 const auth = new auth0.WebAuth({

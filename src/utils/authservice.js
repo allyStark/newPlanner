@@ -6,13 +6,13 @@ const ACCESS_TOKEN_KEY = 'access_token';
 
 const CLIENT_ID = 'MtW7JNeO8iQ2elHzUOsavLJlFKD66Koo';
 const CLIENT_DOMAIN = 'allyauth.auth0.com';
-const REDIRECT = 'http://localhost:3000/callback';
+const REDIRECT = 'https://barplanner.herokuapp.com/callback';
 const AUDIENCE = 'http://goingtobar.com';
 
 const auth = new auth0.WebAuth({
   clientID: CLIENT_ID, 
   domain: CLIENT_DOMAIN,
-  scope: 'openid profile'
+  scope: 'openid profile' 
 });
 
 module.exports.login = function() {
