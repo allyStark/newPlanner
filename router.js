@@ -23,7 +23,7 @@ const authCheck = jwt({
         jwksRequestsPerMinute: 5,
         jwksUri: "https://allyauth.auth0.com/.well-known/jwks.json"
     }), 
-    //API identifier
+    //API identifier 
     audience: 'http://goingtobar.com',
     issuer: "https://allyauth.auth0.com/",
     algorithms: ['RS256']

@@ -8,6 +8,8 @@ const dotenv = require('dotenv');
 
 dotenv.load();
 
+process.env.NODE_ENV = "production";
+
 gulp.task('sass', function(){
     return gulp.src('src/stylesheets/style.scss')
         .pipe(sass())
@@ -26,7 +28,7 @@ gulp.task('watch', function() {
 
     b.on('update', makeBundle)
 
-    function makeBundle() {
+    function makeBundle() { 
         b.transform('babelify', { presets: 'react' })
         .bundle()
         .on('error', (err) => {

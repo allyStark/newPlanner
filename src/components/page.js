@@ -8,7 +8,7 @@ class Page extends React.Component{
         return (
             <div>
             <Navi /> 
-            <Main />
+            <Main /> 
             </div>
         )
     }
