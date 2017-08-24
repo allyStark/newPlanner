@@ -1,8 +1,6 @@
 const decode = require('jwt-decode');
 const browserHistory = require('react-router').browserHistory;
-// import { browserHistory } from 'react-router';
 const auth0 = require('auth0-js');
-// import auth0 from 'auth0-js';
 const ID_TOKEN_KEY = 'id_token';
 const ACCESS_TOKEN_KEY = 'access_token';
 

@@ -55930,7 +55930,7 @@ class Main extends React.Component {
         }
     }
     render() {
-        return React.createElement(Grid, null, React.createElement('div', { className: 'picture' }, React.createElement(Row, { className: 'instructions' }, React.createElement('br', null), React.createElement('p', null, '- Create an account and login.'), React.createElement('p', null, '- Search for bars in your area and see who is going to be there!'), React.createElement('p', null, '- If you live in a big city with lots of bars, try to include the street name or neighbourhood.'), React.createElement('p', null, '- Drink responsibly! Or don\'t, that\'s up to you.'), React.createElement('p', null, '- Hit the giant Yelp button to get more info about the bar you are interested in!'), React.createElement('br', null)), React.createElement(Row, null, React.createElement('div', { className: 'form-group' }, React.createElement('label', null, 'Enter Your Location'), React.createElement('input', { type: 'text', className: 'form-control', id: 'location' }), React.createElement(Button, { block: true, onClick: this.validateForm }, 'Find Me Some Bars!'), React.createElement('div', { id: 'feedback', className: 'feedback' })))), React.createElement(Results, { results: this.state.data }));
+        return React.createElement(Grid, null, React.createElement('div', { className: 'picture' }, React.createElement(Row, { className: 'instructions' }, React.createElement('br', null), React.createElement('p', null, '- Create an account and login.'), React.createElement('p', null, '- Search for bars in your area and see who is going to be there!'), React.createElement('p', null, '- If you live in a big city with lots of bars, try to include the street name or neighbourhood.'), React.createElement('p', null, '- Press the giant \'Going?\' button to declare your intentions to go to the bar!'), React.createElement('p', null, '- Hit the giant Yelp button to get more info about the bar you are interested in!'), React.createElement('p', null, '- When the date changes at the bars local time, the people going will reset to 0.'), React.createElement('p', null, '- Drink responsibly! Or don\'t, that\'s up to you.'), React.createElement('br', null)), React.createElement(Row, null, React.createElement('div', { className: 'form-group' }, React.createElement('label', null, 'Enter Your Location'), React.createElement('input', { type: 'text', className: 'form-control', id: 'location' }), React.createElement(Button, { block: true, onClick: this.validateForm }, 'Find Me Some Bars!'), React.createElement('div', { id: 'feedback', className: 'feedback' })))), React.createElement(Results, { results: this.state.data }));
     }
 }
 
@@ -55958,7 +55958,6 @@ class Navi extends React.Component {
         super();
 
         this.handleClick = this.handleClick.bind(this);
-        this.testClick = this.testClick.bind(this);
         this.returnUser = this.returnUser.bind(this);
 
         this.state = {
@@ -55974,10 +55973,6 @@ class Navi extends React.Component {
             this.setState({ loggedIn: false, userName: null });
         }
     }
-    testClick() {
-        //let token = getAccessToken(); 
-
-    }
     returnUser() {
         let profile = getProfile(getAccessToken(), profile => {
             localStorage.setItem('user_name', profile.nickname);
@@ -55985,42 +55980,7 @@ class Navi extends React.Component {
         });
     }
     render() {
-        return React.createElement(
-            Navbar,
-            { className: 'main-nav' },
-            React.createElement(
-                Navbar.Header,
-                null,
-                React.createElement(
-                    Navbar.Brand,
-                    null,
-                    React.createElement(
-                        'a',
-                        { className: 'brand' },
-                        'Where Ya Drinkin?'
-                    )
-                )
-            ),
-            React.createElement(
-                Nav,
-                { className: 'pull-right' },
-                isLoggedIn() && !this.state.userName ? this.returnUser() : null,
-                React.createElement(
-                    NavItem,
-                    null,
-                    this.state.userName
-                ),
-                isLoggedIn() ? React.createElement(
-                    NavItem,
-                    { onClick: this.handleClick },
-                    'Logout'
-                ) : React.createElement(
-                    NavItem,
-                    { onClick: this.handleClick },
-                    'Login'
-                )
-            )
-        );
+        return React.createElement(Navbar, { className: 'main-nav' }, React.createElement(Navbar.Header, null, React.createElement(Navbar.Brand, null, React.createElement('a', { className: 'brand' }, 'Where Ya Drinkin?'))), React.createElement(Nav, { className: 'pull-right' }, isLoggedIn() && !this.state.userName ? this.returnUser() : null, React.createElement(NavItem, null, this.state.userName), isLoggedIn() ? React.createElement(NavItem, { onClick: this.handleClick }, 'Logout') : React.createElement(NavItem, { onClick: this.handleClick }, 'Login')));
     }
 }
 
@@ -56074,9 +56034,7 @@ module.exports = Results;
 },{"./element":586,"react":569}],590:[function(require,module,exports){
 const decode = require('jwt-decode');
 const browserHistory = require('react-router').browserHistory;
-// import { browserHistory } from 'react-router';
 const auth0 = require('auth0-js');
-// import auth0 from 'auth0-js';
 const ID_TOKEN_KEY = 'id_token';
 const ACCESS_TOKEN_KEY = 'access_token';
 
@@ -56131,54 +56089,6 @@ function clearAccessToken() {
 // Helper function that will allow us to extract the access_token and id_token
 function getParameterByName(name) {
   let match = RegExp('[#&]' + name + '=([^&]*)').exec(window.location.hash);
-  return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-}
-
-// Get and store access_token in local storage
-module.exports.setAccessToken = function () {
-  let accessToken = getParameterByName('access_token');
-  localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-};
-
-// Get and store id_token in local storage
-module.exports.setIdToken = function () {
-  let idToken = getParameterByName('id_token');
-  localStorage.setItem(ID_TOKEN_KEY, idToken);
-};
-
-module.exports.isLoggedIn = function () {
-  const idToken = getIdToken();
-  return !!idToken && !isTokenExpired(idToken);
-};
-
-function getTokenExpirationDate(encodedToken) {
-  const token = decode(encodedToken);
-  if (!token.exp) {
-    return null;
-  }
-
-  const date = new Date(0);
-  date.setUTCSeconds(token.exp);
-
-  return date;
-}
-
-function isTokenExpired(token) {
-  const expirationDate = getTokenExpirationDate(token);
-  return expirationDate < new Date();
-}
-
-module.exports.getProfile = function (accessToken, callback) {
-  auth.client.userInfo(accessToken, (err, profile) => {
-    if (profile) {
-      callback(profile);
-    }
-    if (err) throw err;
-  });
-};
-
-},{"auth0-js":24,"jwt-decode":247,"react-router":537}]},{},[584]);
-match = RegExp('[#&]' + name + '=([^&]*)').exec(window.location.hash);
   return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
 }
 

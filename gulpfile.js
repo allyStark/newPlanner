@@ -1,8 +1,8 @@
-var gulp = require('gulp');
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var watchify = require('watchify');
-var sass = require('gulp-sass');
+const gulp = require('gulp');
+const browserify = require('browserify');
+const source = require('vinyl-source-stream');
+const watchify = require('watchify');
+const sass = require('gulp-sass');
 
 // gulp.task('bundle', function() {
 //     return browserify('src/app.js')
@@ -22,7 +22,7 @@ gulp.task('watch', function() {
 
     gulp.watch('src/stylesheets/style.scss', ['sass']);
 
-    var b = browserify({
+    let b = browserify({
         entries: ['src/app.js'],
         cache: {}, packageCache: {},
         plugin: ['watchify']
@@ -33,7 +33,7 @@ gulp.task('watch', function() {
     function makeBundle() {
         b.transform('babelify', { presets: 'react' })
         .bundle()
-        .on('error', function(err) {
+        .on('error', (err) => {
             console.error(err.message);
             console.error(err.codeFrame);
         })

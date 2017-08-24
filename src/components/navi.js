@@ -19,7 +19,6 @@ class Navi extends React.Component {
         super();
 
         this.handleClick = this.handleClick.bind(this);
-        this.testClick = this.testClick.bind(this);
         this.returnUser = this.returnUser.bind(this);
 
         this.state = { 
@@ -35,10 +34,6 @@ class Navi extends React.Component {
             this.setState({ loggedIn: false, userName: null }); 
         }
     }
-    testClick(){
-        //let token = getAccessToken(); 
-        
-    } 
     returnUser(){
         let profile = getProfile(getAccessToken(), (profile) => {
             localStorage.setItem('user_name', profile.nickname);

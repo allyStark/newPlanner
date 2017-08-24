@@ -7,6 +7,9 @@ const mongoose = require('mongoose');
 const jwt = require('express-jwt');
 const jwks = require('jwks-rsa');
 const cors = require('cors');
+const dotenv = require('dotenv');
+
+dotenv.load();
 //use cors
 router.use(cors());
 
@@ -19,23 +22,20 @@ const authCheck = jwt({
         rateLimit: true,
         jwksRequestsPerMinute: 5,
         jwksUri: "https://allyauth.auth0.com/.well-known/jwks.json"
-    }),
+    }), 
     //API identifier
     audience: 'http://goingtobar.com',
     issuer: "https://allyauth.auth0.com/",
     algorithms: ['RS256']
 });
 
-//TODO use these as environment variables for production
-const yelpToken = {
-                access_token: "0NcJTYLBaovwIPpsNfz0-c0MX4q1PhNcJ9QoldlQLxHgx2yKh6Y66Cmyd2Gd4jv7ElR_o8h4PNuB_uYsFUCqdBpUKc4J_PKPyHJ4ZZ5i4JugWVWrKMxido5qST-SWXYx",
-                expires_in: 15551999,
-                token_type: "Bearer"
-                }
+// const yelpToken = {
+//                 access_token: process.env.YELP_ACCESS_TOKEN,
+//                 expires_in: 15551999,
+//                 token_type: "Bearer"
+//                 }
 //set axios auth header
-//TODO script that requests new bearer token if current one is invalid
-axios.defaults.headers.common['Authorization'] = 'Bearer 0NcJTYLBaovwIPpsNfz0-c0MX4q1PhNcJ9QoldlQLxHgx2yKh6Y66Cmyd2Gd4jv7ElR_o8h4PNuB_uYsFUCqdBpUKc4J_PKPyHJ4ZZ5i4JugWVWrKMxido5qST-SWXYx';
-
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + process.env.YELP_ACCESS_TOKEN;
 
 //endpoint to make request to yelp
 router.post('/api/places',(req, res) => {

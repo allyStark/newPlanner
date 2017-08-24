@@ -41,8 +41,10 @@ class Main extends React.Component {
                 <p>- Create an account and login.</p>
                 <p>- Search for bars in your area and see who is going to be there!</p>
                 <p>- If you live in a big city with lots of bars, try to include the street name or neighbourhood.</p>
-                <p>- Drink responsibly! Or don't, that's up to you.</p>
+                <p>- Press the giant 'Going?' button to declare your intentions to go to the bar!</p>
                 <p>- Hit the giant Yelp button to get more info about the bar you are interested in!</p>
+                <p>- When the date changes at the bars local time, the people going will reset to 0.</p>
+                <p>- Drink responsibly! Or don't, that's up to you.</p>
                 <br/>
             </Row>
             <Row>

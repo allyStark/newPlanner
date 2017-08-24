@@ -1,7 +1,7 @@
-var React = require('react');
+const React = require('react');
 
-var Navi = require('./navi');
-var Main = require('./main');
+const Navi = require('./navi');
+const Main = require('./main');
 
 class Page extends React.Component{
     render() {
