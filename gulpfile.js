@@ -4,12 +4,6 @@ const source = require('vinyl-source-stream');
 const watchify = require('watchify');
 const sass = require('gulp-sass');
 
-const dotenv = require('dotenv');
-
-dotenv.load();
-
-process.env.NODE_ENV = "production";
-
 gulp.task('sass', function(){
     return gulp.src('src/stylesheets/style.scss')
         .pipe(sass())
@@ -19,6 +13,8 @@ gulp.task('sass', function(){
 gulp.task('watch', function() {
 
     gulp.watch('src/stylesheets/style.scss', ['sass']);
+
+    process.env.NODE_ENV = 'production';
 
     let b = browserify({
         entries: ['src/app.js'],

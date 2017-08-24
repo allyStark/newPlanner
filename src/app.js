@@ -11,7 +11,7 @@ class Page extends React.Component{
     render() {
         return (
             <div>
-            <Navi />
+            <Navi /> 
             <Router history={browserHistory}>
                 <Route path="/" component={Main} />
                 <Route path="/callback" component={Callback} />
