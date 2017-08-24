@@ -1,12 +1,12 @@
-var React = require('react');
-var axios = require('axios');
+const React = require('react');
+const axios = require('axios');
 
-var Grid = require('react-bootstrap').Grid;
-var Row = require('react-bootstrap').Row;
-var Col = require('react-bootstrap').Col;
-var Button = require('react-bootstrap').Button;
+const Grid = require('react-bootstrap').Grid;
+const Row = require('react-bootstrap').Row;
+const Col = require('react-bootstrap').Col;
+const Button = require('react-bootstrap').Button;
 
-var Results = require('./results');
+const Results = require('./results');
 
 class Main extends React.Component {
     constructor() {
@@ -35,11 +35,15 @@ class Main extends React.Component {
     render() {
         return(
         <Grid>
-            <Row>
+            <div className="picture">
+            <Row className="instructions">
+                <br/>
+                <p>- Create an account and login.</p>
                 <p>- Search for bars in your area and see who is going to be there!</p>
-                <p>- If you live in a big city with lots of bars, try to include the street name or neighbourhood</p>
+                <p>- If you live in a big city with lots of bars, try to include the street name or neighbourhood.</p>
                 <p>- Drink responsibly! Or don't, that's up to you.</p>
                 <p>- Hit the giant Yelp button to get more info about the bar you are interested in!</p>
+                <br/>
             </Row>
             <Row>
                 <div className="form-group">    
@@ -49,7 +53,7 @@ class Main extends React.Component {
                     <div id="feedback" className="feedback"></div>
                 </div>
             </Row>
-
+            </div>
             <Results results={this.state.data}/>
 
         </Grid>    

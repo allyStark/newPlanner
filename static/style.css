@@ -1,10 +1,14 @@
-@import url("https://fonts.googleapis.com/css?family=Josefin+Slab");
+@import url("https://fonts.googleapis.com/css?family=Karla|Special+Elite");
 .results-row {
-  margin: 20px 0 20px 0;
-  background-color: #EFE1BA; }
+  margin: 20px 0 0 0;
+  background-color: #EFE1BA;
+  border-left: black 1px solid;
+  -webkit-box-shadow: inset 9px -25px 236px -71px rgba(0, 0, 0, 0.21);
+  -moz-box-shadow: inset 9px -25px 236px -71px rgba(0, 0, 0, 0.21);
+  box-shadow: inset 9px -25px 236px -71px rgba(0, 0, 0, 0.21); }
 
 .results-name {
-  font-family: "Josefin Slab", serif;
+  font-family: "Karla", sans-serif;
   font-size: 200%;
   margin-top: 10px; }
 
@@ -16,31 +20,64 @@
 .results-going {
   height: 122px;
   width: 200px;
-  font-family: "Josefin Slab", serif;
+  font-family: "Karla", sans-serif;
   font-size: 150%;
-  background-color: #C5CBE3; }
+  background-color: #C5CBE3;
+  border: 1px #4056A2 solid; }
   .results-going:hover {
     transition: 0.5s;
     font-size: 200%; }
 
 .people-going {
-  font-family: "Josefin Slab", serif;
+  font-family: "Karla", sans-serif;
   font-size: 140%;
   font-weight: bold;
   margin-top: 45px; }
 
 .main-nav {
   background-color: #EFE1BA;
-  font-family: "Josefin Slab", serif;
+  font-family: "Karla", sans-serif;
   font-size: 150%;
   color: #EFE1BA;
   font-weight: bold;
-  border-bottom: 2px #4056A2 solid; }
+  border-bottom: 1px #4056A2 solid;
+  -webkit-box-shadow: inset 9px -25px 236px -71px rgba(0, 0, 0, 0.21);
+  -moz-box-shadow: inset 9px -25px 236px -71px rgba(0, 0, 0, 0.21);
+  box-shadow: inset 9px -25px 236px -71px rgba(0, 0, 0, 0.21); }
 
 .form-group {
-  font-family: "Josefin Slab", serif;
+  font-family: "Karla", sans-serif;
   font-size: 140%; }
 
 p {
-  font-family: "Josefin Slab", serif;
+  font-family: "Karla", sans-serif;
   font-size: 140%; }
+
+.attending-row {
+  font-family: "Special Elite", cursive;
+  background-color: whitesmoke;
+  font-size: 150%;
+  margin-left: 0px;
+  border-left: 1px black solid;
+  border-bottom: 1px black solid; }
+
+body {
+  background-color: whitesmoke; }
+
+.brand {
+  font-family: "Special Elite", cursive;
+  font-size: 150%;
+  color: black;
+  margin-top: 5px; }
+
+h2 {
+  font-family: "Karla", sans-serif; }
+
+.login-message {
+  font-family: "Special Elite", cursive;
+  font-size: 140%;
+  margin-top: 3%; }
+
+@media only screen and (max-width: 800px) {
+  .results-row {
+    text-align: center; } }

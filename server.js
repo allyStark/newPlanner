@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 //client
 app.use(express.static('static'));
 //connect to mongo
-mongoose.connect('mongodb://localhost/bar', function(err){
+mongoose.connect('mongodb://localhost/nightlife', function(err){
     if(err){
         console.log("Not connected to DB");
     } else {

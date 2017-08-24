@@ -1,11 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Josefin+Slab');
+@import url('https://fonts.googleapis.com/css?family=Karla|Special+Elite');
 
-$main-font: 'Josefin Slab', serif;
+$main-font: 'Karla', sans-serif;
+$title-font: 'Special Elite', cursive;
 $main-color: #4056A2;
 $second-color: #EFE1BA;
 $third-color: #D79922;
 $fourth-color:#C5CBE3;  
-$border: 2px $main-color solid;
+$border: 1px $main-color solid;
 
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
@@ -14,9 +15,17 @@ $border: 2px $main-color solid;
           border-radius: $radius;
 }
 
+@mixin shadow() {
+-webkit-box-shadow: inset 9px -25px 236px -71px rgba(0,0,0,0.21);
+-moz-box-shadow: inset 9px -25px 236px -71px rgba(0,0,0,0.21);
+box-shadow: inset 9px -25px 236px -71px rgba(0,0,0,0.21);
+}
+
 .results-row{
-    margin: 20px 0 20px 0;
+    margin: 20px 0 0 0;
     background-color: $second-color;
+    border-left: black 1px solid;
+    @include shadow();
 }
 .results-name{
     font-family: $main-font;
@@ -34,6 +43,7 @@ $border: 2px $main-color solid;
     font-family: $main-font;
     font-size: 150%;
     background-color: $fourth-color;
+    border: $border;
     &:hover{
         transition: 0.5s;
         font-size:200%;
@@ -52,6 +62,7 @@ $border: 2px $main-color solid;
     color: $second-color;
     font-weight: bold;
     border-bottom: $border;
+    @include shadow();
 }
 .form-group{
     font-family: $main-font;
@@ -60,4 +71,37 @@ $border: 2px $main-color solid;
 p{
     font-family: $main-font;
     font-size: 140%;
+}
+.attending-row{
+    font-family: $title-font;
+    background-color: whitesmoke;
+    font-size: 150%;
+    margin-left:0px;
+    border-left: 1px black solid;
+    border-bottom: 1px black solid;
+}
+body{
+    background-color: whitesmoke;
+}
+.brand{
+    font-family: $title-font;
+    font-size: 150%;
+    color:black;
+    margin-top:5px;
+}
+h2{
+    font-family: $main-font;
+}
+.login-message{
+    font-family: $title-font;
+    font-size: 140%;
+    margin-top: 3%;
+}
+@media only screen and (max-width: 800px) {
+    .results-row{
+        text-align: center;
+    }
+    .button-col{
+        
+    }
 }

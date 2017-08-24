@@ -120,14 +120,21 @@ router.post('/api/going', authCheck, (req, res) => {
 
     Bar.findById(barId, (err, bar) => {
         if(err) throw err;
-        bar.attending.push(req.body.attendee);
+        
         let currentDate = getDate(bar.offset);
 
         if(currentDate !== bar.date){
             bar.date = currentDate;
             bar.going = 1;
         } else {
-            bar.going = bar.going + 1;
+            if(bar.attending.indexOf(req.body.attendee) != -1){
+                bar.going = bar.going - 1;
+                let removeIndex = bar.attending.indexOf(req.body.attendee);
+                bar.attending.splice(removeIndex, 1);
+            } else {
+                bar.going = bar.going + 1;
+                bar.attending.push(req.body.attendee);
+            }    
         }
 
         bar.save((err) => {
@@ -137,7 +144,7 @@ router.post('/api/going', authCheck, (req, res) => {
     });
 });
 
-//let client side react-router deal with callback
+//let client side react-router deal with url callback
 router.get('/callback', (req,res) => {
     res.sendFile(path.resolve(__dirname, 'static/index.html'));
 });

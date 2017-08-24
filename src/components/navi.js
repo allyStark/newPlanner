@@ -50,7 +50,7 @@ class Navi extends React.Component {
         <Navbar className="main-nav">
             <Navbar.Header>
             <Navbar.Brand>
-                <a href="#">Where Ya Drinkin?</a>
+                <a className="brand">Where Ya Drinkin?</a>
             </Navbar.Brand>
             </Navbar.Header>
             <Nav className="pull-right">

@@ -11,7 +11,7 @@ const CLIENT_DOMAIN = 'allyauth.auth0.com';
 const REDIRECT = 'http://localhost:3000/callback';
 const AUDIENCE = 'http://goingtobar.com';
 
-var auth = new auth0.WebAuth({
+const auth = new auth0.WebAuth({
   clientID: CLIENT_ID, 
   domain: CLIENT_DOMAIN,
   scope: 'openid profile'
@@ -28,6 +28,7 @@ module.exports.login = function() {
 module.exports.logout = function() {
   clearIdToken();
   clearAccessToken();
+  localStorage.removeItem('user_name');
   browserHistory.push('/');
 }
 
@@ -92,14 +93,10 @@ function isTokenExpired(token) {
 }
 
 module.exports.getProfile = function(accessToken, callback){
-  //let accessToken = this.getAccessToken();
   auth.client.userInfo(accessToken, (err, profile) => {
-    //console.log(profile);
     if(profile){
       callback(profile);
     }
-    
-    //TODO add callback to deal with async
     if(err) throw err;
   })
 }
