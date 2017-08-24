@@ -18,7 +18,7 @@ const Bar = require('./models/Bar');
 //authorization check
 const authCheck = jwt({
     secret: jwks.expressJwtSecret({
-        cache: true,
+        cache: true, 
         rateLimit: true,
         jwksRequestsPerMinute: 5,
         jwksUri: "https://allyauth.auth0.com/.well-known/jwks.json"

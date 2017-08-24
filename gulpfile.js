@@ -4,6 +4,10 @@ const source = require('vinyl-source-stream');
 const watchify = require('watchify');
 const sass = require('gulp-sass');
 
+const dotenv = require('dotenv');
+
+dotenv.load();
+
 gulp.task('sass', function(){
     return gulp.src('src/stylesheets/style.scss')
         .pipe(sass())

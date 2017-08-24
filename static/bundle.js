@@ -55831,65 +55831,7 @@ class Element extends React.Component {
         }
     }
     render() {
-        return React.createElement(
-            'div',
-            null,
-            React.createElement(
-                Row,
-                { className: 'results-row', key: this.state._id + "elementRow" },
-                React.createElement(
-                    Col,
-                    { md: 3, className: 'results-name text-center' },
-                    this.state.name
-                ),
-                isLoggedIn() ? React.createElement(
-                    Col,
-                    { xs: 3, className: 'button-col' },
-                    React.createElement(
-                        Button,
-                        { bsSize: 'large', className: 'results-going', id: this.state.name, onClick: this.handleClick },
-                        this.state.button
-                    )
-                ) : React.createElement(
-                    'div',
-                    null,
-                    React.createElement(Col, { xs: 2 }),
-                    React.createElement(
-                        Col,
-                        { className: 'login-message', xs: 2 },
-                        'Login to attend'
-                    ),
-                    React.createElement(Col, { xs: 3 })
-                ),
-                isLoggedIn() ? React.createElement(
-                    Col,
-                    { className: 'people-going text-center', id: this.state._id + "peoplegoing", xs: 4 },
-                    this.state.going
-                ) : React.createElement('div', null),
-                React.createElement(
-                    Col,
-                    { xs: 2, className: 'button-col' },
-                    React.createElement(
-                        'a',
-                        { href: this.state.url },
-                        React.createElement(
-                            Button,
-                            { bsSize: 'large' },
-                            React.createElement('img', { className: 'result-yelp', src: './images/yelplogo.png' })
-                        )
-                    )
-                )
-            ),
-            React.createElement(
-                Row,
-                { className: 'attending-row' },
-                React.createElement(
-                    Col,
-                    { md: 12, className: 'attending-col' },
-                    this.state.attending
-                )
-            )
-        );
+        return React.createElement('div', null, React.createElement(Row, { className: 'results-row', key: this.state._id + "elementRow" }, React.createElement(Col, { md: 3, className: 'results-name text-center' }, this.state.name), isLoggedIn() ? React.createElement(Col, { xs: 3, className: 'button-col' }, React.createElement(Button, { bsSize: 'large', className: 'results-going', id: this.state.name, onClick: this.handleClick }, this.state.button)) : React.createElement('div', null, React.createElement(Col, { xs: 2 }), React.createElement(Col, { className: 'login-message', xs: 2 }, 'Login to attend'), React.createElement(Col, { xs: 3 })), isLoggedIn() ? React.createElement(Col, { className: 'people-going text-center', id: this.state._id + "peoplegoing", xs: 4 }, this.state.going) : React.createElement('div', null), React.createElement(Col, { xs: 2, className: 'button-col' }, React.createElement('a', { href: this.state.url }, React.createElement(Button, { bsSize: 'large' }, React.createElement('img', { className: 'result-yelp', src: './images/yelplogo.png' }))))), React.createElement(Row, { className: 'attending-row' }, React.createElement(Col, { md: 12, className: 'attending-col' }, this.state.attending)));
     }
 }
 module.exports = Element;
@@ -56049,42 +55991,7 @@ class Navi extends React.Component {
         });
     }
     render() {
-        return React.createElement(
-            Navbar,
-            { className: 'main-nav' },
-            React.createElement(
-                Navbar.Header,
-                null,
-                React.createElement(
-                    Navbar.Brand,
-                    null,
-                    React.createElement(
-                        'a',
-                        { className: 'brand' },
-                        'Where Ya Drinkin?'
-                    )
-                )
-            ),
-            React.createElement(
-                Nav,
-                { className: 'pull-right' },
-                isLoggedIn() && !this.state.userName ? this.returnUser() : null,
-                React.createElement(
-                    NavItem,
-                    null,
-                    this.state.userName
-                ),
-                isLoggedIn() ? React.createElement(
-                    NavItem,
-                    { onClick: this.handleClick },
-                    'Logout'
-                ) : React.createElement(
-                    NavItem,
-                    { onClick: this.handleClick },
-                    'Login'
-                )
-            )
-        );
+        return React.createElement(Navbar, { className: 'main-nav' }, React.createElement(Navbar.Header, null, React.createElement(Navbar.Brand, null, React.createElement('a', { className: 'brand' }, 'Where Ya Drinkin?'))), React.createElement(Nav, { className: 'pull-right' }, isLoggedIn() && !this.state.userName ? this.returnUser() : null, React.createElement(NavItem, null, this.state.userName), isLoggedIn() ? React.createElement(NavItem, { onClick: this.handleClick }, 'Logout') : React.createElement(NavItem, { onClick: this.handleClick }, 'Login')));
     }
 }
 
@@ -56119,17 +56026,7 @@ class Results extends React.Component {
         return elements;
     }
     render() {
-        return React.createElement(
-            'div',
-            null,
-            this.props.results[0][0].date ? React.createElement(
-                'h2',
-                null,
-                'Showing plans for ',
-                this.props.results[0][0].date
-            ) : React.createElement('h2', null),
-            this.renderResults()
-        );
+        return React.createElement('div', null, this.props.results[0][0].date ? React.createElement('h2', null, 'Showing plans for ', this.props.results[0][0].date) : React.createElement('h2', null), this.renderResults());
     }
 }
 
