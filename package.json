@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify js/app.js -g [envify --NODE_ENV 'production'] -t [ babelify --presets [ es2015 react ] ]| uglifyjs -c -m > public/js/app.js"
+    "build": "webpack src/app.js dist/bundle.js"
   },
   "keywords": [],
   "author": "",
@@ -33,11 +33,14 @@
     "babel-preset-react": "^6.24.1",
     "babelify": "^7.3.0",
     "browserify": "^14.4.0",
+    "bundle-collapser": "^1.3.0",
     "envify": "^4.1.0",
     "gulp": "^3.9.1",
     "gulp-envify": "^1.0.0",
     "gulp-sass": "^3.1.0",
     "uglify-es": "^3.0.28",
-    "watchify": "^3.9.0"
+    "uglifyify": "^4.0.3",
+    "watchify": "^3.9.0",
+    "webpack": "^3.5.5"
   }
 }
