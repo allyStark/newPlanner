@@ -13,14 +13,11 @@
   "dependencies": {
     "auth0-js": "^8.9.1",
     "axios": "^0.16.2",
-    "babelify": "^7.3.0",
     "body-parser": "^1.17.2",
-    "browserify": "^14.4.0",
     "cors": "^2.8.4",
     "dotenv": "^4.0.0",
     "express": "^4.15.4",
     "express-jwt": "^5.3.0",
-    "gulp": "^3.9.1",
     "jwks-rsa": "^1.2.0",
     "jwt-decode": "^2.2.0",
     "mongoose": "^4.11.6",
@@ -29,15 +26,18 @@
     "react-dom": "^15.6.1",
     "react-router": "^3.0.0",
     "strftime": "^0.10.0",
-    "uglify-es": "^3.0.28",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.9.0"
+    "vinyl-source-stream": "^1.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browserify": "^14.4.0",
     "envify": "^4.1.0",
+    "gulp": "^3.9.1",
     "gulp-envify": "^1.0.0",
-    "gulp-sass": "^3.1.0"
+    "gulp-sass": "^3.1.0",
+    "uglify-es": "^3.0.28",
+    "watchify": "^3.9.0"
   }
 }
