@@ -14,4 +14,4 @@ class Page extends React.Component{
     }
 }
 
-module.exports = Page;
+module.exports = Page; 

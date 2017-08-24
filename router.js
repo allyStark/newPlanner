@@ -26,7 +26,7 @@ const authCheck = jwt({
     //API identifier 
     audience: 'http://goingtobar.com',
     issuer: "https://allyauth.auth0.com/",
-    algorithms: ['RS256']
+    algorithms: ['RS256'] 
 });
 
 // const yelpToken = {
