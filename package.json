@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify js/app.js -g [envify --NODE_ENV 'production'] -t [ babelify --presets [ es2015 react ] ]| uglifyjs -c -m > public/js/app.js"
   },
   "keywords": [],
   "author": "",
@@ -12,7 +13,6 @@
   "dependencies": {
     "auth0-js": "^8.9.1",
     "axios": "^0.16.2",
-    "babel-preset-react": "^6.24.1",
     "babelify": "^7.3.0",
     "body-parser": "^1.17.2",
     "browserify": "^14.4.0",
@@ -35,6 +35,8 @@
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "envify": "^4.1.0",
     "gulp-envify": "^1.0.0",
     "gulp-sass": "^3.1.0"
   }

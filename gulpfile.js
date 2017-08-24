@@ -23,7 +23,7 @@ gulp.task('watch', function() {
     b.on('update', makeBundle)
 
     function makeBundle() {
-        process.env.NODE_ENV = 'production'; 
+        
         b.transform('babelify', { presets: 'react' })
         .bundle()
         .on('error', (err) => {
