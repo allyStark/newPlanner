@@ -1,5 +1,4 @@
 const React = require('react');
-
 const Element = require('./element');
 
 class Results extends React.Component {

@@ -2,6 +2,11 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const compression = require('compression');
+
+app.use(compression());
+
+process.env.NODE_ENV = 'production';
 
 //client
 app.use(express.static('static'));
@@ -15,7 +20,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/nightlife', fun
 });
 
 //use bodyparser
-app.use(bodyParser.urlencoded({
+app.use(bodyParser.urlencoded({ 
     extended: true
 }));
 app.use(bodyParser.json());

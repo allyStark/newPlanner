@@ -8,8 +8,12 @@ const jwt = require('express-jwt');
 const jwks = require('jwks-rsa');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const compression = require('compression');
+
+router.use(compression());
 
 dotenv.load();
+
 //use cors
 router.use(cors());
 
