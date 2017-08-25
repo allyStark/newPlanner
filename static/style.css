@@ -78,6 +78,6 @@ h2 {
   font-size: 140%;
   margin-top: 3%; }
 
-@media only screen and (max-width: 800px) {
+@media (max-width: 800px) {
   .results-row {
     text-align: center; } }

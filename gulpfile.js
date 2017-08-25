@@ -5,7 +5,6 @@ const watchify = require('watchify');
 const sass = require('gulp-sass');
 const envify = require('envify/custom');
 const uglify = require('gulp-uglify-es').default;
-const uglifyify = require('uglifyify');
 
 gulp.task('sass', function(){
     return gulp.src('src/stylesheets/style.scss')
@@ -29,13 +28,12 @@ gulp.task('watch', function() {
         
         b.transform('babelify', { presets: 'react' })
         .bundle()
-        b.transform()
         .on('error', (err) => {
             console.error(err.message);
             console.error(err.codeFrame);
         }) 
         .pipe(source('bundle.js'))
-        .pipe(gulp.dest('dist/'));
+        .pipe(gulp.dest('static/'));
     }
     makeBundle();
     return b;
